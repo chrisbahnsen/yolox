@@ -119,7 +119,7 @@ for fname in ids:
             elif(x[0] == 'computer_mouse'):
                 x[0] = 'mouse'
             elif(x[0] == 'power_plugs_and_sockets'):
-                x[0] = 'power_socket'
+                x[0] = 'power socket'
 
             # outdoor
             elif(x[0] == 'waste_container'):
@@ -129,9 +129,9 @@ for fname in ids:
 
             # animal
             elif(x[0] == 'bat_(animal)'):
-                x[0] = 'Bat'
+                x[0] = 'bat'
             elif(x[0] == 'jaguar_(animal)'):
-                x[0] = 'Jaguar'
+                x[0] = 'jaguar'
 
             # first words
             elif(x[0] == 'computer_monitor'):
