@@ -42,6 +42,20 @@ def make_parser():
         help="plz input your experiment description file",
     )
     parser.add_argument(
+        "-a",
+        "--exp_name",
+        default='yolox',
+        type=str,
+        help='experiment name'
+    )
+    parser.add_argument(
+        "-u",
+        "--num_classes",
+        default='3',
+        type=int,
+        help='number of classes for training'
+    )
+    parser.add_argument(
         "--resume", default=False, action="store_true", help="resume training"
     )
     parser.add_argument("-c", "--ckpt", default=None, type=str, help="checkpoint file")
@@ -123,6 +137,8 @@ if __name__ == "__main__":
     args = make_parser().parse_args()
     exp = get_exp(args.exp_file, args.name)
     exp.merge(args.opts)
+    exp.exp_name = args.exp_name
+    exp.num_classes = args.num_classes
 
     if not args.experiment_name:
         args.experiment_name = exp.exp_name

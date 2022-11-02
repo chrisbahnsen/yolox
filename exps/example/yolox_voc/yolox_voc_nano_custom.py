@@ -12,7 +12,7 @@ from yolox.exp import Exp as MyExp
 class Exp(MyExp):
     def __init__(self):
         super(Exp, self).__init__()
-        self.num_classes = 80
+        self.num_classes = 95
         ####
         self.enable_mixup = False
         self.depth = 0.33
@@ -24,7 +24,7 @@ class Exp(MyExp):
         self.warmup_epochs = 1
 
         # ---------- transform config ------------ #
-        self.mosaic_prob = 0.5
+        self.mosaic_prob = 1.0
         #self.mixup_prob = 1.0
         #self.hsv_prob = 1.0
         #self.flip_prob = 0.5
@@ -51,9 +51,13 @@ class Exp(MyExp):
                 act=self.act, depthwise=True
             )
             self.model = YOLOX(backbone, head)
-
+		
         self.model.apply(init_yolo)
         self.model.head.initialize_biases(1e-2)
+
+        print("Experiment name: " + self.exp_name)
+        print("Num_classes: " + str(self.num_classes))
+        
         return self.model
 
     def get_data_loader(self, batch_size, is_distributed, no_aug=False, cache_img=False):
@@ -74,7 +78,7 @@ class Exp(MyExp):
 
         with wait_for_the_master(local_rank):
             dataset = VOCDetection(
-                data_dir=os.path.join(get_yolox_datadir(), "VOCdevkit"),
+                data_dir=os.path.join(get_yolox_datadir(), self.exp_name, "VOCdevkit"),
                 image_sets=[('2007', 'trainval'), ('2012', 'trainval')],
                 img_size=self.input_size,
                 preproc=TrainTransform(
@@ -132,7 +136,7 @@ class Exp(MyExp):
         from yolox.data import VOCDetection, ValTransform
 
         valdataset = VOCDetection(
-            data_dir=os.path.join(get_yolox_datadir(), "VOCdevkit"),
+            data_dir=os.path.join(get_yolox_datadir(), self.exp_name, "VOCdevkit"),
             image_sets=[('2007', 'test')],
             img_size=self.test_size,
             preproc=ValTransform(legacy=legacy),

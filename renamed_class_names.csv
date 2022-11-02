@@ -1,0 +1,345 @@
+class_name,renamed_class_name
+toy,toy
+ball,ball
+apple,apple
+person,person
+beer,beer
+bird,bird
+boat,boat
+bus,bus
+car,car
+laptop,laptop
+computer keyboard,keyboard
+computer mouse,mouse
+computer monitor,monitor
+chair,chair
+cat,cat
+dog,dog
+coin,coin
+door,door
+gas stove,stove
+coffee cup,cup
+flag,flag
+pillow,pillow
+houseplant,houseplant
+stool,stool
+bed,bed
+refrigerator,refrigerator
+table,table
+plate,plate
+knife,knife
+bottle,bottle
+bowl,bowl
+mobile phone,mobile phone
+plastic bag,plastic bag
+tree,tree
+tomato,tomato
+train,train
+wheel,wheel
+bicycle wheel,bicycle wheel
+toilet,toilet
+clothing,clothing
+footwear,shoe
+waste container,waste container
+book,book
+candle,candle
+fish,fish
+furniture,furniture
+airplane,airplane
+spoon,spoon
+fork,fork
+bench,bench
+ice cream,ice cream
+orange,orange
+window,window
+lamp,lamp
+camera,camera
+carrot,carrot
+potato,potato
+microwave oven,oven
+cake,cake
+candy,candy
+salad,salad
+light bulb,light bulb
+umbrella,umbrella
+glasses,glasses
+pen,pen
+teddy bear,teddy bear
+bicycle,bicycle
+goggles,goggles
+handbag,handbag
+hat,hat
+sunglasses,sunglasses
+watch,watch
+strawberry,strawberry
+banana,banana
+cheese,cheese
+truck,truck
+scissors,scissors
+guitar,guitar
+headphones,headphones
+helmet,helmet
+insect,insect
+tank,tank
+tortoise,tortoise
+swimming pool,swimming pool
+flower,flower
+building,building
+butterfly,butterfly
+chicken,chicken
+tennis racket,racket
+table tennis racket,racket
+drum,drum
+ski,ski
+sculpture,sculpture
+musical keyboard,keyboard
+piano,piano
+saxophone,saxophone
+roller skates,roller skates
+trumpet,trumpet
+violin,violin
+surfboard,surfboard
+stairs,stairs
+ladder,ladder
+skateboard,skateboard
+screwdriver,screwdriver
+chainsaw,chainsaw
+wrench,wrench
+flashlight,flashlight
+cattle,cow
+mouse,mouse
+horse,horse
+pig,pig
+goat,goat
+cucumber,cucumber
+food,food
+pancake,pancake
+swan,swan
+duck,duck
+hammer,hammer
+backpack,backpack
+grape,grape
+hotdog,hotdog
+french fries,french fries
+popcorn,popcorn
+cookie,cookie
+muffin,muffin
+lemon,lemon
+pineapple,pineapple
+watermelon,watermelon
+cantaloupe,cantaloupe
+croissant,croissant
+tart,tart
+mushroom,mushroom
+pasta,pasta
+egg (food),egg
+bread,bread
+mirror,mirror
+ladybug,ladybug
+oyster,oyster
+lobster,lobster
+shrimp,shrimp
+crab,crab
+radish,radish
+artichoke,artichoke
+pumpkin,pumpkin
+cabbage,cabbage
+broccoli,broccoli
+bell pepper,bell pepper
+hamburger,hamburger
+desk,desk
+vase,vase
+curtain,curtain
+sushi,sushi
+wine,wine
+snowman,snowman
+ambulance,ambulance
+palm tree,palm tree
+motorcycle,motorcycle
+wheelchair,wheelchair
+canoe,canoe
+dumbbell,dumbbell
+stop sign,stop sign
+street light,street light
+beehive,beehive
+tent,tent
+binoculars,binoculars
+syringe,syringe
+sink,sink
+skull,skull
+bee,bee
+balloon,balloon
+dagger,knive
+barrel,barrel
+kite,kite
+ceiling fan,fan
+adhesive tape,tape
+frying pan,kitchen equipment
+pencil case,pencil case
+box,box
+spider,spider
+frog,frog
+rabbit,rabbit
+sword,sword
+squirrel,squirrel
+weapon,weapon
+snail,snail
+sandwich,sandwich
+bookcase,bookcase
+coconut,coconut
+lipstick,lipstick
+sofa bed,sofa bed
+loveseat,loveseat
+studio couch,studio couch
+couch,couch
+coffee table,coffee table
+kitchen & dining room table,kitchen & dining room table
+chest of drawers,dresser
+cart,cart
+drawer,drawer
+shelf,shelf
+wall clock,clock
+clock,clock
+whiteboard,whiteboard
+infant bed,bed
+wardrobe,wardrobe
+bathroom cabinet,bathroom cabinet
+closet,closet
+kitchen cabinet,cupboard
+cupboard,cupboard
+saucer,saucer
+wine glass,wine glass
+plant,plant
+christmas tree,christmas tree
+fountain,fountain
+traffic light,traffic light
+billboard,billboard
+tire,tire
+helicopter,helicopter
+parachute,parachute
+van,van
+chopsticks,chopsticks
+poster,poster
+calculator,calculator
+washing machine,washing machine
+teapot,teapot
+toaster,toaster
+shower,shower
+power plugs and sockets,power plugs and sockets
+bathtub,bathtub
+light switch,light switch
+willow,willow
+dishwasher,dishwasher
+castle,castle
+heater,heater
+maple,bird
+hair dryer,hair dryer
+vehicle registration plate,vehicle registration plate
+coffeemaker,coffeemaker
+remote control,remote control
+stationary bicycle,stationary bicycle
+treadmill,treadmill
+training bench,training bench
+rose,rose
+lily,lily
+vehicle,vehicle
+snowmobile,snowmobile
+golf cart,golf cart
+segway,segway
+unicycle,unicycle
+limousine,limousine
+taxi,taxi
+seat belt,seat belt
+barge,barge
+gondola,gondola
+jet ski,jet ski
+submarine,submarine
+rocket,rocket
+fire hydrant,fire hydrant
+jacuzzi,jacuzzi
+parking meter,parking meter
+honeycomb,honeycomb
+football,football
+house,house
+axe,axe
+tennis ball,tennis ball
+bow and arrow,bow and arrow
+flying disc,flying disc
+baseball bat,baseball bat
+baseball glove,baseball glove
+punching bag,punching bag
+golf ball,golf ball
+snowboard,snowboard
+waffle,waffle
+burrito,burrito
+pretzel,pretzel
+guacamole,guacamole
+common fig,common fig
+pear,pear
+peach,peach
+mango,mango
+grapefruit,grapefruit
+pomegranate,pomegranate
+bagel,bagel
+doughnut,doughnut
+pizza,pizza
+squid,squid
+taco,taco
+garden asparagus,garden asparagus
+submarine sandwich,submarine sandwich
+zucchini,zucchini
+luggage and bags,bag
+magpie,magpie
+woodpecker,woodpecker
+ostrich,ostrich
+penguin,penguin
+raven,raven
+eagle,eagle
+owl,owl
+canary,canary
+goose,goose
+falcon,falcon
+parrot,parrot
+sparrow,sparrow
+turkey,turkey
+centipede,centipede
+starfish,starfish
+jellyfish,jellyfish
+ant,ant
+caterpillar,caterpillar
+dragonfly,dragonfly
+scorpion,scorpion
+worm,worm
+bat (animal),bat (animal)
+brown bear,brown bear
+panda,panda
+polar bear,polar bear
+fox,fox
+jaguar (animal),jaguar (animal)
+tiger,tiger
+lion,lion
+leopard,leopard
+cheetah,cheetah
+otter,otter
+camel,camel
+giraffe,giraffe
+rhinoceros,rhinoceros
+hamster,hamster
+kangaroo,kangaroo
+koala,koala
+sheep,sheep
+zebra,zebra
+monkey,monkey
+hippopotamus,hippo
+deer,deer
+elephant,elephant
+porcupine,porcupine
+hedgehog,hedgehog
+bull,bull
+antelope,antelope
+mule,mule
+dolphin,dolphin
+whale,whale
+sea lion,sea lion
+harbor seal,harbor seal
+alpaca,alpaca
