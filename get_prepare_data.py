@@ -56,7 +56,7 @@ def getPrepareData(model):
     args = dict()
     args['type_data'] = 'all'
     args['classes'] = [model + '.txt']
-    args['limit'] = 20
+    args['limit'] = 3000
     args['multi_classes'] = True
     args['dataset'] = model
     args['yes'] = True
@@ -65,7 +65,7 @@ def getPrepareData(model):
     args['command'] = 'downloader'
 
     oid = OIDv6.OIDv6()
-    #oid.download(args)
+    oid.download(args)
 
     # For the categories with amount of data below 3000, merge the test and validation set into the training set
     for i in fullClassInfo:
