@@ -12,14 +12,14 @@ def getPrepareData(model):
     fullClassInfo = []
 
     classRenameDict = dict()
-    renameFieldnames = []
+    renameFieldnames = ['class_name', 'renamed_class_name']
 
-    with open('renamed_class_names.csv', 'r') as f:
-        reader = csv.DictReader(f)
-        renameFieldnames = reader.fieldnames
+    # with open('renamed_class_names.csv', 'r') as f:
+    #     reader = csv.DictReader(f)
+    #     renameFieldnames = reader.fieldnames
 
-        for row in reader:
-            classRenameDict[row['class_name']] = row['renamed_class_name']
+    #     for row in reader:
+    #         classRenameDict[row['class_name']] = row['renamed_class_name']
 
     # Open the class information file for the model 
     with open(model + '.csv', 'r') as f:
@@ -65,7 +65,7 @@ def getPrepareData(model):
     args['command'] = 'downloader'
 
     oid = OIDv6.OIDv6()
-    oid.download(args)
+    #oid.download(args)
 
     # For the categories with amount of data below 3000, merge the test and validation set into the training set
     for i in fullClassInfo:
@@ -104,6 +104,7 @@ def getPrepareData(model):
     # Make the final conversion to VOC
     convertvoc('datasets/' + model + '/VOCdevkit/')
 
+    print("Copying files...")
     os.system('mkdir -p datasets/' + model + '/VOCdevkit/VOC2012')
     os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
 
@@ -136,7 +137,7 @@ def getPrepareData(model):
 
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
-        f.write('python3.9 tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -o -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
+        f.write('python3.9 tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
 
     os.system('chmod +x ' + scriptFile)
 

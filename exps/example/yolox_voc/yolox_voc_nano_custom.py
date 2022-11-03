@@ -12,7 +12,7 @@ from yolox.exp import Exp as MyExp
 class Exp(MyExp):
     def __init__(self):
         super(Exp, self).__init__()
-        self.num_classes = 95
+        self.num_classes = 48
         ####
         self.enable_mixup = False
         self.depth = 0.33

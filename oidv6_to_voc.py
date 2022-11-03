@@ -37,6 +37,10 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
             f = open(txtfile,"r")
             imgfile = os.path.join(sourcepath, fname +'.jpg')
             img = cv2.imread(imgfile, cv2.IMREAD_UNCHANGED) #Read image to get image width and height
+            
+            if img is None:
+            	continue
+            	
             top = Element('annotation')
             child = SubElement(top,'folder')
             child.text = 'open_images_volume'
@@ -156,8 +160,9 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
                 #     x[0] = 'racket'
                 # elif(x[0] == 'table_tennis_racket'):
                 #     x[0] = 'racket'
+                old_class_name = x[0].replace('_',' ')
 
-                child_name.text = classRenameDict[x[0]]
+                child_name.text = classRenameDict[old_class_name]
 
                 child_pose = SubElement(child_obj, 'pose')
                 child_pose.text = 'Unspecified'
@@ -183,9 +188,9 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
                 child_ymax.text = str(int(float(x[4]))) #ymax
 
             tree = ET.ElementTree(top)
-            save = fname+'.xml'
+            save = myfile
             tree.write(save)
-            move(fname+'.xml', myfile)
+            #move(fname+'.xml', myfile)
 
 
 if __name__ == '__main__':
