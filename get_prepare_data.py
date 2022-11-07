@@ -14,13 +14,6 @@ def getPrepareData(model):
     classRenameDict = dict()
     renameFieldnames = ['class_name', 'renamed_class_name']
 
-    # with open('renamed_class_names.csv', 'r') as f:
-    #     reader = csv.DictReader(f)
-    #     renameFieldnames = reader.fieldnames
-
-    #     for row in reader:
-    #         classRenameDict[row['class_name']] = row['renamed_class_name']
-
     # Open the class information file for the model 
     with open(model + '.csv', 'r') as f:
         reader = csv.DictReader(f)
@@ -87,26 +80,36 @@ def getPrepareData(model):
         except Exception as e:
             print(e)
 
-    # Combine the newly acquired data
+    # # Combine the newly acquired data
 
-    # Call the OIDV6 script from here
+    # # Call the OIDV6 script from here
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
                         'renamed_class_names.csv')
 
     # Copy to separate VOC folder
-    os.system('mkdir -p datasets/' + model + '/VOCdevkit/')
-    os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
-    os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
+    os.makedirs('datasets/' + model + '/VOCdevkit/', exist_ok=True)
 
-    os.system('mkdir -p datasets/' + model + '/VOCdevkit/VOC2007/')
+    if os.name == 'nt':
+        cwd = os.getcwd()
+        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\')
+        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\')
+    else:
+        os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
+        os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
+
+    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
 
     # Make the final conversion to VOC
     convertvoc('datasets/' + model + '/VOCdevkit/')
 
     print("Copying files...")
-    os.system('mkdir -p datasets/' + model + '/VOCdevkit/VOC2012')
-    os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
+    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2012/', exist_ok=True)
+    
+    if os.name == 'nt':
+        os.system('powershell Copy-Item -Path ' + cwd + '\\datasets\\' +  model + '\\VOCdevkit\\VOC2007\\* -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2012\\ -Recurse')
+    else:
+        os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
 
 
     # Create the class files in COCO and VOC format
@@ -145,7 +148,7 @@ def getPrepareData(model):
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
-    parser.add_argument('--model', type=str, default="firstwords", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--model', type=str, default="animal", help="Name of the model. Make sure that appropriate csv file is provided")
 
     args = parser.parse_args()
 

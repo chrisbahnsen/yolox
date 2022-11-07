@@ -1,224 +1,80 @@
-class_name,renamed_class_name
-toy,toy
-ball,ball
-apple,apple
-person,person
-beer,beer
-bird,bird
-boat,boat
-bus,bus
-car,car
-laptop,laptop
-computer keyboard,keyboard
-computer mouse,mouse
-computer monitor,monitor
-chair,chair
-cat,cat
-dog,dog
-coin,coin
-door,door
-gas stove,stove
-coffee cup,cup
-flag,flag
-pillow,pillow
-houseplant,houseplant
-stool,stool
-bed,bed
-refrigerator,refrigerator
-table,table
-plate,plate
-knife,knife
-bottle,bottle
-bowl,bowl
-mobile phone,mobile phone
-plastic bag,plastic bag
-tree,tree
-tomato,tomato
-train,train
-wheel,wheel
-bicycle wheel,bicycle wheel
-toilet,toilet
-clothing,clothing
-footwear,shoe
-waste container,waste container
-book,book
-candle,candle
-fish,fish
-furniture,furniture
-airplane,airplane
-spoon,spoon
-fork,fork
-bench,bench
-ice cream,ice cream
-orange,orange
-window,window
-lamp,lamp
-camera,camera
-carrot,carrot
-potato,potato
-microwave oven,oven
-cake,cake
-candy,candy
-salad,salad
-umbrella,umbrella
-glasses,glasses
-pen,pen
-teddy bear,teddy bear
-bicycle,bicycle
-hat,hat
-sunglasses,sunglasses
-watch,watch
-strawberry,strawberry
-banana,banana
-cheese,cheese
-truck,truck
-guitar,guitar
-headphones,headphones
-insect,insect
-tank,tank
-swimming pool,swimming pool
-flower,flower
-building,building
-chicken,chicken
-tennis racket,racket
-table tennis racket,racket
-drum,drum
-ski,ski
-sculpture,sculpture
-musical keyboard,keyboard
-piano,piano
-saxophone,saxophone
-trumpet,trumpet
-violin,violin
-surfboard,surfboard
-stairs,stairs
-ladder,ladder
-skateboard,skateboard
-horse,horse
-pig,pig
-cucumber,cucumber
-food,food
-pancake,pancake
-duck,duck
-grape,grape
-hotdog,hotdog
-french fries,french fries
-popcorn,popcorn
-cookie,cookie
-muffin,muffin
-lemon,lemon
-pineapple,pineapple
-watermelon,watermelon
-croissant,croissant
-tart,tart
-mushroom,mushroom
-pasta,pasta
-egg (food),egg
-bread,bread
-mirror,mirror
-light bulb,light bulb
-oyster,oyster
-radish,radish
-artichoke,artichoke
-pumpkin,pumpkin
-cabbage,cabbage
-broccoli,broccoli
-bell pepper,bell pepper
-hamburger,hamburger
-desk,desk
-vase,vase
-curtain,curtain
-sushi,sushi
-wine,wine
-snowman,snowman
-ambulance,ambulance
-palm tree,palm tree
-motorcycle,motorcycle
-wheelchair,wheelchair
-canoe,canoe
-stop sign,stop sign
-street light,street light
-beehive,beehive
-tent,tent
-sink,sink
-skull,skull
-balloon,balloon
-barrel,barrel
-ceiling fan,fan
-box,box
-sword,sword
-weapon,weapon
-sandwich,sandwich
-bookcase,bookcase
-coconut,coconut
-sofa bed,sofa bed
-loveseat,loveseat
-studio couch,studio couch
-couch,couch
-coffee table,coffee table
-kitchen & dining room table,kitchen & dining room table
-chest of drawers,dresser
-cart,cart
-drawer,drawer
-shelf,shelf
-wall clock,clock
-clock,clock
-whiteboard,whiteboard
-infant bed,bed
-wardrobe,wardrobe
-bathroom cabinet,bathroom cabinet
-closet,closet
-cupboard,cupboard
-saucer,saucer
-wine glass,wine glass
-plant,plant
-christmas tree,christmas tree
-fountain,fountain
-traffic light,traffic light
-billboard,billboard
-tire,tire
-helicopter,helicopter
-parachute,parachute
-van,van
-chopsticks,chopsticks
-poster,poster
-calculator,calculator
-teapot,teapot
-bathtub,bathtub
-castle,castle
-vehicle registration plate,vehicle registration plate
-rose,rose
-lily,lily
-barge,barge
-gondola,gondola
-jet ski,jet ski
-rocket,rocket
-honeycomb,honeycomb
-football,football
-house,house
-axe,axe
-tennis ball,tennis ball
-baseball bat,baseball bat
-baseball glove,baseball glove
-golf ball,golf ball
-snowboard,snowboard
-waffle,waffle
-burrito,burrito
-pretzel,pretzel
-guacamole,guacamole
-common fig,common fig
-pear,pear
-peach,peach
-mango,mango
-grapefruit,grapefruit
-pomegranate,pomegranate
-cantaloupe,cantaloupe
-bagel,bagel
-doughnut,doughnut
-pizza,pizza
-squid,squid
-taco,taco
-garden asparagus,garden asparagus
-submarine sandwich,submarine sandwich
-zucchini,zucchini
-luggage and bags,bag
+class_name,renamed_class_name
+magpie,magpie
+woodpecker,woodpecker
+ostrich,ostrich
+penguin,penguin
+raven,raven
+chicken,chicken
+eagle,eagle
+owl,owl
+duck,duck
+canary,canary
+goose,goose
+swan,swan
+falcon,falcon
+parrot,parrot
+sparrow,sparrow
+turkey,turkey
+crab,crab
+centipede,centipede
+starfish,starfish
+shrimp,shrimp
+frog,frog
+lobster,lobster
+jellyfish,jellyfish
+bee,bee
+ladybug,ladybug
+ant,ant
+caterpillar,caterpillar
+butterfly,butterfly
+dragonfly,dragonfly
+scorpion,scorpion
+worm,worm
+spider,spider
+oyster,oyster
+snail,snail
+bat (animal),bat (animal)
+brown bear,brown bear
+panda,panda
+polar bear,polar bear
+cat,cat
+fox,fox
+jaguar (animal),jaguar (animal)
+tiger,tiger
+lion,lion
+dog,dog
+leopard,leopard
+cheetah,cheetah
+otter,otter
+camel,camel
+cattle,cow
+giraffe,giraffe
+rhinoceros,rhinoceros
+goat,goat
+horse,horse
+hamster,hamster
+kangaroo,kangaroo
+koala,koala
+mouse,mouse
+pig,pig
+rabbit,rabbit
+squirrel,squirrel
+sheep,sheep
+zebra,zebra
+monkey,monkey
+hippopotamus,hippo
+deer,deer
+elephant,elephant
+porcupine,porcupine
+hedgehog,hedgehog
+bull,bull
+antelope,antelope
+mule,mule
+dolphin,dolphin
+whale,whale
+sea lion,sea lion
+harbor seal,harbor seal
+insect,insect
+alpaca,alpaca
+tortoise,tortoise
+bird,bird
