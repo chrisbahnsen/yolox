@@ -18,8 +18,12 @@ def getPrepareData(model, limit):
     renameFieldnames = ['class_name', 'renamed_class_name']
 
     # Open the class information file for the model 
-    with open(model + '.csv', 'r') as f:
-        reader = csv.DictReader(f)
+    with open(model + '.csv', 'r', encoding='utf-8-sig') as f:
+        sniffer = csv.Sniffer()
+
+        dialect = sniffer.sniff(f.read(1024), delimiters=';,')
+        f.seek(0)
+        reader = csv.DictReader(f, dialect=dialect)
 
         # Populate a list of all the classes that should be downloaded from 
         # Google OpenImages V6
@@ -56,7 +60,7 @@ def getPrepareData(model, limit):
         # We find both jpg and xml files, which count as one
         numMatches = len(matches) / 2
 
-        if len(matches) >= fullClassInfo[cls]['train']:
+        if len(matches) >= int(fullClassInfo[cls]['train']):
             # No need to re-download this class, plenty of existing data
             # already
             classesDownloadList.remove(cls)
@@ -195,5 +199,5 @@ if __name__ == '__main__':
 
     print(args)
 
-    getPrepareData(args.model)
+    getPrepareData(args.model, args.limit)
 
