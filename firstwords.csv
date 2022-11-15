@@ -1,4 +1,10 @@
 class_name,train,validation,test,total,renamed_class_name,Combine
+tool,17481,308,972,18761,,
+vegetable,17481,308,972,18761,,
+fruit,17481,308,972,18761,,
+traffic sign,17481,308,972,18761,,
+mechanical fan,17481,308,972,18761,,
+dessert,17481,308,972,18761,,
 toy,17481,308,972,18761,,
 ball,3480,205,654,4339,,
 apple,1078,54,167,1299,,
