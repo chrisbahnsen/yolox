@@ -4,12 +4,15 @@ import argparse
 from oidv6 import OIDv6
 from oidv6_to_voc import convertFromOidv6ToVoc
 from voc_txt import convertvoc
+from pathlib import Path
+from shutil import move
+from os.path import basename, join
 
 
-def getPrepareData(model):
+def getPrepareData(model, limit):
 
     classesDownloadList = []
-    fullClassInfo = []
+    fullClassInfo = dict()
 
     classRenameDict = dict()
     renameFieldnames = ['class_name', 'renamed_class_name']
@@ -28,12 +31,7 @@ def getPrepareData(model):
             else:
                 classRenameDict[row['class_name']] = row['class_name']
 
-            fullClassInfo.append(row)
-
-    with open(model + '.txt', 'w') as f:
-        for c in classesDownloadList:
-            f.write(c + '\n')
-
+            fullClassInfo[row['class_name']] = row
 
     with open('renamed_class_names.csv', 'w') as f:
         writer = csv.DictWriter(f, fieldnames=renameFieldnames)
@@ -43,13 +41,47 @@ def getPrepareData(model):
             v = {'class_name': c[0], 'renamed_class_name': c[1]}
             writer.writerow(v)
 
+    # Search for images that are already downloaded to 
+    # another directory
+    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
+
+    for cls in classesDownloadList:
+        clsName = cls.replace(' ', '_')
+        matches = []
+
+        for path in Path('datasets').rglob(clsName + "*"):
+            print(path)
+            matches.append(path)
+
+        # We find both jpg and xml files, which count as one
+        numMatches = len(matches) / 2
+
+        if len(matches) >= fullClassInfo[cls]['train']:
+            # No need to re-download this class, plenty of existing data
+            # already
+            classesDownloadList.remove(cls)
+            print("Found {} images of class {}, no need to re-download".format(len(matches), cls))
+
+            # Now move this data
+            for m in matches:
+                # We only move the 2007 data as we will copy the 2012 data later
+                if '2007' in m and model not in m:
+                    d = join('datasets/', model, '/VOCdevkit/VOC2007/', basename(m))
+                    print("Copying {} to {}...".format(m, d))
+                    move(m, d)
+
+    with open(model + '.txt', 'w') as f:
+        for c in classesDownloadList:
+            f.write(c + '\n')
+
+
     # # Now download the data
     # # ...move this to a shell script
 
     args = dict()
     args['type_data'] = 'all'
     args['classes'] = [model + '.txt']
-    args['limit'] = 3000
+    args['limit'] = limit
     args['multi_classes'] = True
     args['dataset'] = model
     args['yes'] = True
@@ -61,9 +93,9 @@ def getPrepareData(model):
     oid.download(args)
 
     # For the categories with amount of data below 3000, merge the test and validation set into the training set
-    for i in fullClassInfo:
+    for className, i in fullClassInfo.items():
         try:
-            if int(i['train']) < 3000:
+            if int(i['train']) < limit:
                 print('Combining train, test and validation imags for class: ' + i['class_name'])
                 # Now move data from test to train
                 
@@ -83,6 +115,7 @@ def getPrepareData(model):
     # # Combine the newly acquired data
 
     # # Call the OIDV6 script from here
+    print("Converting data to VOC format...")
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
                         'renamed_class_names.csv')
@@ -90,6 +123,7 @@ def getPrepareData(model):
     # Copy to separate VOC folder
     os.makedirs('datasets/' + model + '/VOCdevkit/', exist_ok=True)
 
+    print("Moving data, hold tight...")
     if os.name == 'nt':
         cwd = os.getcwd()
         os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\')
@@ -101,6 +135,7 @@ def getPrepareData(model):
     os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
 
     # Make the final conversion to VOC
+    print("Making the final conversion to VOC, creating trainval and test samples")
     convertvoc('datasets/' + model + '/VOCdevkit/')
 
     print("Copying files...")
@@ -134,7 +169,8 @@ def getPrepareData(model):
 
 
     # Create the training script
-    print("NUM_CLASSES: " + str(len(finalClassNames)))
+    print("Number of classes: " + str(len(finalClassNames)))
+    
 
     scriptFile = 'train-' + model + '.sh'
 
@@ -144,11 +180,16 @@ def getPrepareData(model):
 
     os.system('chmod +x ' + scriptFile)
 
+    print("Run {} to start training".format(scriptFile))
+
+    ## TODO: Write script for evaluation here
+
 
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
     parser.add_argument('--model', type=str, default="animal", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--limit', type=int, default="3000", help="Maximum number of images per class that are downloaded")
 
     args = parser.parse_args()
 

@@ -1,0 +1,16 @@
+﻿class_name;train;test;validation;total;renamed_class_name;combine
+band-aid;20;1;0;21;;
+dress;31527;2049;710;34286;;
+human_arm;41380;10436;3532;55348;arm;
+human_beard;2771;497;175;3443;beard;
+human_body;45398;16903;5686;67987;body;
+human_ear;8336;1975;683;10994;ear;
+human_eye;23743;5928;1962;31633;eye;
+human_face;331627;9292;3124;344043;face;
+human_foot;979;657;199;1835;foot;
+human_hair;56391;12945;4325;73661;hair;
+human_hand;22093;6274;2056;30423;hand;
+human_head;49308;11253;3711;64272;head;
+human_leg;17454;5499;1799;24752;leg;
+human_mouth;24454;5940;1979;32373;mouth;
+human_nose;28791;7775;2612;39178;nose;
