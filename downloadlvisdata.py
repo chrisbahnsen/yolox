@@ -1,7 +1,8 @@
 import lvis
 import json
+import zipfile
 import os
-
+import wget
 from tqdm import tqdm
 from xmltodict import unparse
 
@@ -64,9 +65,9 @@ def convertCOCOtoVOC(stage, cats, imags, anns, dst_base):
                 open(os.path.join(dst_dirs["Annotations"], "{}.xml".format(str(k).zfill(12))), "w"),
                 full_document=False, pretty=True)
 
-    print("Write image sets")
-    with open(os.path.join(dst_dirs["ImageSets"], "{}.txt".format(stage)), "w") as f:
-        f.writelines(list(map(lambda x: str(x).zfill(12) + "\n", images.keys())))
+    # print("Write image sets")
+    # with open(os.path.join(dst_dirs["ImageSets"], "{}.txt".format(stage)), "w") as f:
+    #     f.writelines(list(map(lambda x: str(x).zfill(12) + "\n", images.keys())))
 
     print("OK")
 
@@ -74,14 +75,33 @@ def convertCOCOtoVOC(stage, cats, imags, anns, dst_base):
 
 def getLVISbyCategories(set, selectedCats, dstFolder):
 
+    validSets = {'train', 'val'}
+    dataUrls = {'train': "https://s3-us-west-2.amazonaws.com/dl.fbaipublicfiles.com/LVIS/lvis_v1_train.json.zip", 
+                'val': "https://s3-us-west-2.amazonaws.com/dl.fbaipublicfiles.com/LVIS/lvis_v1_val.json.zip"}
+    dataFiles = {'train': 'lvis_v1_train.json',
+                'val': 'lvis_v1_val.json'}
+
+    if set not in validSets:
+        raise ValueError("getLVISbyCategories: set must be one of %r." % validSets)
+
+    # Download data if not already downloadet
+    dataPath = os.path.join(dstFolder, dataFiles[set])
+
+    if not os.path.isfile(os.path.join(dstFolder, dataFiles[set])):
+        print("Downloading LVIS {} annotations...".format(set))
+        zipPath = dataPath + ".zip"
+        wget.download(dataUrls[set], zipPath)
+
+        # Unzip the data
+        with zipfile.ZipFile(zipPath, 'r') as zip_ref:
+            zip_ref.extractall(dstFolder)
+
     dst_dirs = {x: os.path.join(dstFolder, x) for x in ["Annotations", "ImageSets", "JPEGImages"]}
     dst_dirs['ImageSets'] = os.path.join(dst_dirs['ImageSets'], "Main")
     for k, d in dst_dirs.items():
         os.makedirs(d, exist_ok=True)
 
-    # WGet the LVIS annotations here to subfolder
-    # Goes in val/train variants, solve this with argparse
-    anns = lvis.LVIS('lvis_v1_val.json')
+    anns = lvis.LVIS(dataPath)
 
     catids = anns.get_cat_ids()
 
@@ -141,6 +161,8 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
                     selectedAnnotations['images'], 
                     lvisanns)
 
+getLVISbyCategories('val', ['boat'], ".")
+
 # To write in new annotation file
 # categories
 # annotations -> image_id, size, category_id, bbox
@@ -150,3 +172,4 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
 # https://gist.github.com/jinyu121/a222492405890ce912e95d8fb5367977
 
 
+# TODO: Integrate with selectedCAts, proper dstFolder

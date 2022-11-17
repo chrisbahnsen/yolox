@@ -187,6 +187,7 @@ def getPrepareData(model, limit):
 
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
+        # TODO: CREATE setup for weights and biases
         f.write('python3.9 tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
 
     os.system('chmod +x ' + scriptFile)

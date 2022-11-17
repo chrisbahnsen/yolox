@@ -8,6 +8,12 @@ torchvision
 thop
 ninja
 tabulate
+tensorflow
+tensorflow-probability
+lvis
+wget
+tqdm
+xmltodict
 
 # verified versions
 # pycocotools corresponds to https://github.com/ppwwyyxx/cocoapi
