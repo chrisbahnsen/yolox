@@ -1,6 +1,5 @@
 ﻿class_name;database;train;test;validation;total;renamed_class_name;combine
-band-aid;OID;20;1;0;21;;
-dress;OID;31527;2049;710;34286;;
+skull;OID;1501;100;27;1700;;
 human_arm;OID;41380;10436;3532;55348;arm;
 human_beard;OID;2771;497;175;3443;beard;
 human_body;OID;45398;16903;5686;67987;body;

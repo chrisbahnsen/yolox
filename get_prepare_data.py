@@ -63,23 +63,23 @@ def getPrepareData(model, limit):
         matches = []
 
         for path in Path('datasets').rglob(clsName + "*"):
-            print(path)
-            matches.append(path)
+            #print(path)
+            matches.append(str(path))
 
         # We find both jpg and xml files, which count as one
         numMatches = len(matches) / 2
 
-        if len(matches) >= int(fullClassInfo[cls]['train']):
+        if numMatches >= int(fullClassInfo[cls]['train']):
             # No need to re-download this class, plenty of existing data
             # already
             classesDownloadList.remove(cls)
-            print("Found {} images of class {}, no need to re-download".format(len(matches), cls))
+            print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
 
             # Now move this data
             for m in matches:
                 # We only move the 2007 data as we will copy the 2012 data later
-                if '2007' in m and model not in m:
-                    d = join('datasets/', model, '/VOCdevkit/VOC2007/', basename(m))
+                if ('2007' in m or '2012' in m) and model not in m:
+                    d = join('datasets', model, 'VOCdevkit', basename(m))
                     print("Copying {} to {}...".format(m, d))
                     move(m, d)
 
