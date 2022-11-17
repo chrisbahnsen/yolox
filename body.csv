@@ -1,16 +1,40 @@
-﻿class_name;train;test;validation;total;renamed_class_name;combine
-band-aid;20;1;0;21;;
-dress;31527;2049;710;34286;;
-human_arm;41380;10436;3532;55348;arm;
-human_beard;2771;497;175;3443;beard;
-human_body;45398;16903;5686;67987;body;
-human_ear;8336;1975;683;10994;ear;
-human_eye;23743;5928;1962;31633;eye;
-human_face;331627;9292;3124;344043;face;
-human_foot;979;657;199;1835;foot;
-human_hair;56391;12945;4325;73661;hair;
-human_hand;22093;6274;2056;30423;hand;
-human_head;49308;11253;3711;64272;head;
-human_leg;17454;5499;1799;24752;leg;
-human_mouth;24454;5940;1979;32373;mouth;
-human_nose;28791;7775;2612;39178;nose;
+﻿class_name;database;train;test;validation;total;renamed_class_name;combine
+band-aid;OID;20;1;0;21;;
+dress;OID;31527;2049;710;34286;;
+human_arm;OID;41380;10436;3532;55348;arm;
+human_beard;OID;2771;497;175;3443;beard;
+human_body;OID;45398;16903;5686;67987;body;
+human_ear;OID;8336;1975;683;10994;ear;
+human_eye;OID;23743;5928;1962;31633;eye;
+human_face;OID;331627;9292;3124;344043;face;
+human_foot;OID;979;657;199;1835;foot;
+human_hair;OID;56391;12945;4325;73661;hair;
+human_hand;OID;22093;6274;2056;30423;hand;
+human_head;OID;49308;11253;3711;64272;head;
+human_leg;OID;17454;5499;1799;24752;leg;
+human_mouth;OID;24454;5940;1979;32373;mouth;
+human_nose;OID;28791;7775;2612;39178;nose;
+head;pascal-parts;1;1;1;1;
+leye;pascal-parts;1;1;1;1;eye
+reye;pascal-parts;1;1;1;1;eye
+lear;pascal-parts;1;1;1;1;ear
+rear;pascal-parts;1;1;1;1;ear
+lebrow;pascal-parts;1;1;1;1;eyebrow
+rebrow;pascal-parts;1;1;1;1;eyebrow
+nose;pascal-parts;1;1;1;1;
+mouth;pascal-parts;1;1;1;1;
+hair;pascal-parts;1;1;1;1;
+torso;pascal-parts;1;1;1;1;
+neck;pascal-parts;1;1;1;1;
+llarm;pascal-parts;1;1;1;1;lower arm
+rlarm;pascal-parts;1;1;1;1;lower arm
+luarm;pascal-parts;1;1;1;1;upper arm
+ruarm;pascal-parts;1;1;1;1;upper arm
+rhand;pascal-parts;1;1;1;1;hand
+lhand;pascal-parts;1;1;1;1;hand
+llleg;pascal-parts;1;1;1;1;lower leg
+rlleg;pascal-parts;1;1;1;1;lower leg
+lfoot;pascal-parts;1;1;1;1;foot
+rfoot;pascal-parts;1;1;1;1;foot
+ruleg;pascal-parts;1;1;1;1;upper leg
+luleg;pascal-parts;1;1;1;1;upper leg

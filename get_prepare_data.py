@@ -28,12 +28,21 @@ def getPrepareData(model, limit):
         # Populate a list of all the classes that should be downloaded from 
         # Google OpenImages V6
         for row in reader:
-            classesDownloadList.append(row['class_name'])
+            download = True
 
-            if row['renamed_class_name']:
-                classRenameDict[row['class_name']] = row['renamed_class_name']
-            else:
-                classRenameDict[row['class_name']] = row['class_name']
+            if 'database' in row:
+                download = False
+
+                if 'OID' in row['database']:
+                    download = True
+            
+            if download:
+                classesDownloadList.append(row['class_name'])
+
+                if row['renamed_class_name']:
+                    classRenameDict[row['class_name']] = row['renamed_class_name']
+                else:
+                    classRenameDict[row['class_name']] = row['class_name']
 
             fullClassInfo[row['class_name']] = row
 
