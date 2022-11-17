@@ -7,7 +7,7 @@ from voc_txt import convertvoc
 from pathlib import Path
 from shutil import move
 from os.path import basename, join
-
+import tqdm
 
 def getPrepareData(model, limit):
 
@@ -76,11 +76,10 @@ def getPrepareData(model, limit):
             print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
 
             # Now move this data
-            for m in matches:
+            for m in tqdm(matches, 'Copying images to {}'.format(join('datasets', model, 'VOCdevkit'))):
                 # We only move the 2007 data as we will copy the 2012 data later
                 if ('2007' in m or '2012' in m) and model not in m:
                     d = join('datasets', model, 'VOCdevkit', basename(m))
-                    print("Copying {} to {}...".format(m, d))
                     move(m, d)
 
     with open(model + '.txt', 'w') as f:
@@ -128,7 +127,6 @@ def getPrepareData(model, limit):
     # # Combine the newly acquired data
 
     # # Call the OIDV6 script from here
-    print("Converting data to VOC format...")
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
                         'renamed_class_names.csv')

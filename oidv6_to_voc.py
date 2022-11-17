@@ -12,6 +12,7 @@ from pathlib import Path
 from shutil import move
 import argparse
 import csv
+import tqdm
 
 def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
 
@@ -29,7 +30,7 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
         if filename.endswith('.jpg'):
             ids.append(filename[:-4])
 
-    for fname in ids: 
+    for fname in tqdm(ids, "Converting from OIDv6 to VOC"): 
         myfile = os.path.join(dest_path,fname +'.xml')
         myfile = Path(myfile)
         if not myfile.exists(): #if file is not existing 
@@ -39,7 +40,7 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
             img = cv2.imread(imgfile, cv2.IMREAD_UNCHANGED) #Read image to get image width and height
             
             if img is None:
-            	continue
+                continue
             	
             top = Element('annotation')
             child = SubElement(top,'folder')

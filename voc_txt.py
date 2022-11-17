@@ -4,6 +4,7 @@ import random
 import sys
 from pathlib import Path
 import argparse
+import tqdm
 
 def shufflelines(filepath):
     lines = open(filepath, 'r').readlines()
@@ -17,8 +18,10 @@ def convertvoc(root_path):
     imagefilepath = root_path + 'VOC2007/JPEGImages/'
     os.makedirs(imagefilepath, exist_ok = True)
 
+    filenames = os.listdir(root_path)
+
     # Move annotations to annotations folder
-    for filename in os.listdir(root_path):
+    for filename in tqdm(filenames, "Moving files to VOC2007 folder"):
         if filename.endswith('.xml'):
             with open(os.path.join(root_path, filename)) as f:
                 Path(root_path + filename).rename(xmlfilepath + filename)
@@ -75,7 +78,7 @@ def convertvoc(root_path):
     total_test = 0
 
 
-    for cls_name, x_list in xml_grouped_by_class.items():
+    for cls_name, x_list in tqdm(xml_grouped_by_class.items(), "Creating train/test split"):
         num = len(x_list)
         list = range(num)
         tv = int(num * trainval_percent)
