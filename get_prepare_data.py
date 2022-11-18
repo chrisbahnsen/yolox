@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 from shutil import move
 from os.path import basename, join
-import tqdm
+from tqdm import tqdm
 from oidv6 import OIDv6
 
 from oidv6_to_voc import convertFromOidv6ToVoc
