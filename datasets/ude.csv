@@ -1,0 +1,98 @@
+,class,train,test,validation,Rename,database
+0,airplane,12003.0,2456.0,758.0,,OID
+1,ambulance,338.0,61.0,14.0,,OID
+2,backpack,715.0,74.0,24.0,,OID
+3,ball,3480.0,654.0,205.0,,OID
+4,balloon,3262.0,121.0,51.0,,OID
+5,barge,419.0,23.0,8.0,boat,OID
+6,barrel,662.0,65.0,41.0,,OID
+7,beehive,430.0,53.0,16.0,,OID
+8,bench,3630.0,8.0,6.0,,OID
+9,bicycle,17631.0,737.0,252.0,,OID
+10,bicycle_helmet,5006.0,279.0,108.0,helmet,OID
+11,bicycle_wheel,15599.0,700.0,245.0,wheel,OID
+12,billboard,3399.0,55.0,31.0,,OID
+13,boat,25478.0,1727.0,567.0,,OID
+14,bottle,11456.0,621.0,207.0,,OID
+15,box,2212.0,227.0,77.0,,OID
+16,building,104007.0,5844.0,1884.0,,OID
+17,bus,7293.0,273.0,82.0,,OID
+18,camera,5037.0,342.0,142.0,,OID
+19,cannon,779.0,57.0,18.0,,OID
+20,cart,1981.0,256.0,95.0,,OID
+21,castle,3738.0,113.0,32.0,,OID
+22,chair,25504.0,944.0,311.0,,OID
+23,coin,1224.0,156.0,55.0,,OID
+24,common_sunflower,1570.0,79.0,29.0,sunflower,OID
+25,fire_hydrant,408.0,60.0,15.0,fire hydrant,OID
+26,flag,8402.0,215.0,74.0,,OID
+27,flower,62716.0,6949.0,2336.0,,OID
+28,flowerpot,7352.0,495.0,184.0,,OID
+29,football,4339.0,217.0,64.0,,OID
+30,fountain,3089.0,67.0,21.0,,OID
+31,glasses,41945.0,819.0,258.0,,OID
+32,handgun,561.0,75.0,20.0,gun,OID
+33,helicopter,2398.0,393.0,136.0,,OID
+34,helmet,7608.0,919.0,315.0,,OID
+35,house,58145.0,1755.0,570.0,,OID
+36,kite,365.0,56.0,19.0,,OID
+37,ladder,754.0,72.0,21.0,,OID
+38,lantern,808.0,50.0,12.0,,OID
+39,lighthouse,1464.0,41.0,11.0,,OID
+40,limousine,334.0,68.0,34.0,,OID
+41,mobile_phone,4312.0,360.0,105.0,,OID
+42,motorcycle,6944.0,442.0,151.0,,OID
+43,person,248384.0,21688.0,7144.0,,OID
+44,picnic_basket,284.0,33.0,13.0,basket,OID
+45,plant,72363.0,11531.0,3838.0,,OID
+46,plastic_bag,517.0,20.0,9.0,,OID
+47,rifle,1752.0,294.0,97.0,,OID
+48,rocket,638.0,55.0,15.0,,OID
+49,rose,5407.0,384.0,129.0,,OID
+50,sculpture,18107.0,554.0,190.0,,OID
+51,skateboard,1103.0,140.0,48.0,,OID
+52,snowman,538.0,24.0,3.0,,OID
+53,stop_sign,375.0,34.0,13.0,,OID
+54,street_light,11226.0,108.0,30.0,,OID
+55,suitcase,408.0,55.0,23.0,,OID
+56,sunglasses,15125.0,439.0,134.0,,OID
+57,swimming_pool,3618.0,402.0,156.0,,OID
+58,tank,1062.0,134.0,50.0,,OID
+59,tent,3508.0,110.0,25.0,,OID
+60,tire,30815.0,6728.0,2227.0,,OID
+61,tower,21806.0,466.0,143.0,,OID
+62,traffic_light,1774.0,73.0,22.0,traffic light,OID
+63,traffic_sign,2817.0,87.0,27.0,traffic sign,OID
+64,train,10081.0,281.0,82.0,,OID
+65,tree,289999.0,11154.0,3611.0,,OID
+66,tripod,1196.0,117.0,33.0,,OID
+67,truck,8078.0,909.0,303.0,,OID
+68,umbrella,3357.0,106.0,27.0,,OID
+69,van,5378.0,526.0,178.0,,OID
+70,vehicle_registration_plate,5368.0,2065.0,724.0,vehicle registration plate,OID
+71,waste_container,1020.0,77.0,19.0,waste bin,OID
+72,wheel,76884.0,13324.0,4473.0,,OID
+73,wheelchair,882.0,114.0,48.0,,OID
+74,bench,2214.0,,,,LVIS
+75,umbrella,2203.0,,,,LVIS
+76,backpack,2182.0,,,,LVIS
+77,Trash can,2155.0,,,,LVIS
+78,License plate,2129.0,,,,LVIS
+79,box,1997.0,,,,LVIS
+80,suitcase,1831.0,,,,LVIS
+81,rearview mirror,1247.0,,,,LVIS
+82,cone,1129.0,,,,LVIS
+83,bucket,801.0,,,,LVIS
+84,statue,727.0,,,,LVIS
+85,ladder,710.0,,,,LVIS
+86,lamppost,695.0,,,,LVIS
+87,straw,588.0,,,,LVIS
+88,apron,565.0,,,,LVIS
+89,crate,279.0,,,box,LVIS
+90,saucer,278.0,,,,LVIS
+91,pan,276.0,,,frying pan,LVIS
+92,christmas tree,247.0,,,,LVIS
+93,wheelchair,90.0,,,,LVIS
+94,ambulance,22.0,,,,LVIS
+95,snowman,35.0,,,,LVIS
+96,sword,61.0,,,,LVIS

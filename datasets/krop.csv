@@ -1,0 +1,30 @@
+,class,train,test,validation,Rename,database
+0,human_arm,41380.0,10436.0,3532.0,arm,OID
+1,human_beard,2771.0,497.0,175.0,beard,OID
+2,human_body,45398.0,16903.0,5686.0,body,OID
+3,human_ear,8336.0,1975.0,683.0,ear,OID
+4,human_eye,23743.0,5928.0,1962.0,eye,OID
+5,human_face,331627.0,9292.0,3124.0,face,OID
+6,human_foot,979.0,657.0,199.0,foot,OID
+7,human_hair,56391.0,12945.0,4325.0,hair,OID
+8,human_hand,22093.0,6274.0,2056.0,hand,OID
+9,human_head,49308.0,11253.0,3711.0,head,OID
+10,human_leg,17454.0,5499.0,1799.0,leg,OID
+11,human_mouth,24454.0,5940.0,1979.0,mouth,OID
+12,human_nose,28791.0,7775.0,2612.0,nose,OID
+13,skull,1501.0,100.0,27.0,,OID
+14,hair,,,,,PASCAL-parts
+15,head,,,,,PASCAL-parts
+16,ear,,,,,PASCAL-parts
+17,eye,,,,,PASCAL-parts
+18,eyebrow,,,,,PASCAL-parts
+19,foot,,,,,PASCAL-parts
+20,hand,,,,,PASCAL-parts
+21,lower arm,,,,,PASCAL-parts
+22,lower leg,,,,,PASCAL-parts
+23,upper arm,,,,,PASCAL-parts
+24,upper leg,,,,,PASCAL-parts
+25,mouth,,,,,PASCAL-parts
+26,neck,,,,,PASCAL-parts
+27,nose,,,,,PASCAL-parts
+28,torso,,,,body,PASCAL-parts
