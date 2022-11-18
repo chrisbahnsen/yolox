@@ -12,8 +12,9 @@ tensorflow
 tensorflow-probability
 lvis
 wget
-tqdm
 xmltodict
+openpyxl
+pandas
 
 # verified versions
 # pycocotools corresponds to https://github.com/ppwwyyxx/cocoapi

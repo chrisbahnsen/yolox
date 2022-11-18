@@ -1,10 +1,9 @@
 import lvis
-import json
 import zipfile
 import os
-import wget
 from tqdm import tqdm
 from xmltodict import unparse
+import wget
 
 BBOX_OFFSET = 0
 
@@ -38,7 +37,7 @@ def base_object(size_info, name, bbox):
         'bndbox': {'xmin': x1, 'ymin': y1, 'xmax': x2, 'ymax': y2}
     }
 
-def convertCOCOtoVOC(stage, cats, imags, anns, dst_base):
+def convertCOCOtoVOC(cats, imags, anns, dst_base, classRenameDict):
     #dst_base = os.path.join("data", "VOCdevkitCOCO", "VOCCOCO")
 
     dst_dirs = {x: os.path.join(dst_base, x) for x in ["Annotations", "ImageSets", "JPEGImages"]}
@@ -56,7 +55,10 @@ def convertCOCOtoVOC(stage, cats, imags, anns, dst_base):
         images[im["id"]] = img
 
     for an in tqdm(anns, "Parse Annotations"):
-        ann = base_object(images[an['image_id']]['annotation']["size"], cate[an['category_id']], an['bbox'])
+        catName = cate[an['category_id']]
+        renamedCatName = classRenameDict[catName]
+
+        ann = base_object(images[an['image_id']]['annotation']["size"], renamedCatName, an['bbox'])
         images[an['image_id']]['annotation']['object'].append(ann)
 
     for k, im in tqdm(images.items(), "Write Annotations"):
@@ -69,11 +71,9 @@ def convertCOCOtoVOC(stage, cats, imags, anns, dst_base):
     # with open(os.path.join(dst_dirs["ImageSets"], "{}.txt".format(stage)), "w") as f:
     #     f.writelines(list(map(lambda x: str(x).zfill(12) + "\n", images.keys())))
 
-    print("OK")
 
 
-
-def getLVISbyCategories(set, selectedCats, dstFolder):
+def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, limit):
 
     validSets = {'train', 'val'}
     dataUrls = {'train': "https://s3-us-west-2.amazonaws.com/dl.fbaipublicfiles.com/LVIS/lvis_v1_train.json.zip", 
@@ -81,20 +81,22 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
     dataFiles = {'train': 'lvis_v1_train.json',
                 'val': 'lvis_v1_val.json'}
 
-    if set not in validSets:
-        raise ValueError("getLVISbyCategories: set must be one of %r." % validSets)
+    if chosenSet not in validSets:
+        raise ValueError("getLVISbyCategories: chosenSet must be one of %r." % validSets)
 
     # Download data if not already downloadet
-    dataPath = os.path.join(dstFolder, dataFiles[set])
+    dataPath = os.path.join(dstFolder, dataFiles[chosenSet])
 
-    if not os.path.isfile(os.path.join(dstFolder, dataFiles[set])):
-        print("Downloading LVIS {} annotations...".format(set))
+    if not os.path.isfile(os.path.join(dstFolder, dataFiles[chosenSet])):
+        print("Downloading LVIS {} annotations...".format(chosenSet))
         zipPath = dataPath + ".zip"
-        wget.download(dataUrls[set], zipPath)
+        wget.download(dataUrls[chosenSet], zipPath)
 
         # Unzip the data
         with zipfile.ZipFile(zipPath, 'r') as zip_ref:
             zip_ref.extractall(dstFolder)
+
+        os.remove(zipPath)
 
     dst_dirs = {x: os.path.join(dstFolder, x) for x in ["Annotations", "ImageSets", "JPEGImages"]}
     dst_dirs['ImageSets'] = os.path.join(dst_dirs['ImageSets'], "Main")
@@ -115,16 +117,18 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
         catIndices[cat['name'].lower()] = cat['id']
         catlist.append(cat['name'].lower())
 
+        classRenameDict[cat['name']] = cat['name']
+
     extractCats = []
     extractIndices = []
 
     for scat in selectedCats:
         cat = scat.replace('\n','')
         cat = cat.replace(' ', '_').lower()
-        matches = [c for c in catlist if cat in c]
+        matches = [c for c in catlist if cat == c]
 
         if len(matches) == 0:
-            print("Could not find match for {}".format(cat))
+            print("Could not find match in LVIS database for {}".format(cat))
 
         for match in matches:
             extractCats.append(match)
@@ -135,17 +139,26 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
     selectedCatInfo = anns.load_cats(extractIndices)
 
     # Get the annotation ids given the category ids that we have defined
-    annids = anns.get_ann_ids(cat_ids=extractIndices)
+    annIds = []
 
-    lvisanns = anns.load_anns(ids=annids)
+    for idx in extractIndices:
+        tempAnnIds = anns.get_ann_ids(cat_ids=[idx])
+
+        # Only get the first 'limit' ann ids
+        if len(tempAnnIds) > limit:
+            annIds.extend(tempAnnIds[:limit])
+
+
+    lvisanns = anns.load_anns(ids=annIds)
     imageids = set()
 
     for ann in lvisanns:
         imageids.add(ann['image_id'])
 
     # Download images
-    # for imageId in tqdm(imageids, "Downloading images..."):
-    #     anns.download('JPEGImages', imageId)
+    for imageId in tqdm(imageids, "Downloading LVIS images..."):
+        anns.download(os.path.join(dstFolder, 'JPEGImages'), 
+                      [imageId])
 
     selectedAnnotations = dict()
     selectedAnnotations['categories'] = selectedCatInfo
@@ -156,20 +169,13 @@ def getLVISbyCategories(set, selectedCats, dstFolder):
     # with open('selectedAnns.json', 'w') as f:
     #     json.dump(selectedAnnotations, f)
 
-    convertCOCOtoVOC('test', 
-                    selectedCatInfo, 
+    convertCOCOtoVOC(selectedCatInfo, 
                     selectedAnnotations['images'], 
-                    lvisanns)
+                    lvisanns,
+                    dstFolder, 
+                    classRenameDict)
 
-getLVISbyCategories('val', ['boat'], ".")
-
-# To write in new annotation file
-# categories
-# annotations -> image_id, size, category_id, bbox
-# images -> coco_url, width, height
+#getLVISbyCategories('val', ['boat', 'airplane'], './datasets', dict(), 300)
 
 # COCO to VOC converter:
 # https://gist.github.com/jinyu121/a222492405890ce912e95d8fb5367977
-
-
-# TODO: Integrate with selectedCAts, proper dstFolder

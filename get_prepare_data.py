@@ -1,24 +1,28 @@
 import csv
 import os
 import argparse
-from oidv6 import OIDv6
-from oidv6_to_voc import convertFromOidv6ToVoc
-from voc_txt import convertvoc
 from pathlib import Path
 from shutil import move
 from os.path import basename, join
 import tqdm
+from oidv6 import OIDv6
+
+from oidv6_to_voc import convertFromOidv6ToVoc
+from voc_txt import convertvoc
+from downloadlvisdata import getLVISbyCategories
+
+
 
 def getPrepareData(model, limit):
 
-    classesDownloadList = []
+    downloadList = {'oid': []}
     fullClassInfo = dict()
 
     classRenameDict = dict()
-    renameFieldnames = ['class_name', 'renamed_class_name']
+    csvPath = 'datasets/{}.csv'.format(model)
 
     # Open the class information file for the model 
-    with open(model + '.csv', 'r', encoding='utf-8-sig') as f:
+    with open(csvPath, 'r', encoding='utf-8-sig') as f:
         sniffer = csv.Sniffer()
 
         dialect = sniffer.sniff(f.read(1024), delimiters=';,')
@@ -26,39 +30,50 @@ def getPrepareData(model, limit):
         reader = csv.DictReader(f, dialect=dialect)
 
         # Populate a list of all the classes that should be downloaded from 
-        # Google OpenImages V6
+        # Google OpenImages V6, LVIS, or PASCAL-parts
         for row in reader:
-            download = True
+            database = 'oid'
 
             if 'database' in row:
-                download = False
+                database = row['database'].lower()
 
-                if 'OID' in row['database']:
-                    download = True
+                if database not in downloadList:
+                    downloadList[database] = []
             
-            if download:
-                classesDownloadList.append(row['class_name'])
+            className = ""
 
-                if row['renamed_class_name']:
-                    classRenameDict[row['class_name']] = row['renamed_class_name']
-                else:
-                    classRenameDict[row['class_name']] = row['class_name']
+            if 'class_name' in row:
+                className = row['class_name']
+            elif 'class' in row:
+                className = row['class']
+            else:
+                raise RuntimeError("The file {} should contain a column named \'class\'".format(csvPath))
 
-            fullClassInfo[row['class_name']] = row
+            downloadList[database].append(className)    
 
-    with open('renamed_class_names.csv', 'w') as f:
-        writer = csv.DictWriter(f, fieldnames=renameFieldnames)
-        writer.writeheader()
+            renamedClassName = ""
 
-        for c in classRenameDict.items():
-            v = {'class_name': c[0], 'renamed_class_name': c[1]}
-            writer.writerow(v)
+            if 'renamed_class_name' in row:
+                renamedClassName = row['renamed_class_name']
+            elif 'Rename' in row:
+                renamedClassName = row['Rename']
+            elif 'rename' in row:
+                renamedClassName = row['rename']
+            else:
+                raise RuntimeError("The file {} should contain a column named \'rename\'".format(csvPath))
+
+            if renamedClassName:
+                classRenameDict[className.replace('_', ' ')] = renamedClassName.replace('_', ' ')
+            else:
+                classRenameDict[className.replace('_', ' ')] = className.replace('_', ' ')
+
+            fullClassInfo[className] = row
 
     # Search for images that are already downloaded to 
     # another directory
     os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
 
-    for cls in classesDownloadList:
+    for cls in downloadList['oid']:
         clsName = cls.replace(' ', '_')
         matches = []
 
@@ -68,11 +83,12 @@ def getPrepareData(model, limit):
 
         # We find both jpg and xml files, which count as one
         numMatches = len(matches) / 2
+        trainImgs = int(float(fullClassInfo[cls]['train']))
 
-        if numMatches >= int(fullClassInfo[cls]['train']):
+        if numMatches >= trainImgs:
             # No need to re-download this class, plenty of existing data
             # already
-            classesDownloadList.remove(cls)
+            downloadList['oid'].remove(cls)
             print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
 
             # Now move this data
@@ -82,17 +98,17 @@ def getPrepareData(model, limit):
                     d = join('datasets', model, 'VOCdevkit', basename(m))
                     move(m, d)
 
-    with open(model + '.txt', 'w') as f:
-        for c in classesDownloadList:
+    classListPath = os.path.join('datasets', "{}.txt".format(model))
+
+    with open(classListPath, 'w') as f:
+        for c in downloadList['oid']:
             f.write(c + '\n')
 
 
     # # Now download the data
-    # # ...move this to a shell script
-
     args = dict()
     args['type_data'] = 'all'
-    args['classes'] = [model + '.txt']
+    args['classes'] = [classListPath]
     args['limit'] = limit
     args['multi_classes'] = True
     args['dataset'] = model
@@ -104,10 +120,12 @@ def getPrepareData(model, limit):
     oid = OIDv6.OIDv6()
     oid.download(args)
 
-    # For the categories with amount of data below 3000, merge the test and validation set into the training set
+    # For the categories with amount of data below limit, merge the test and validation set into the training set
     for className, i in fullClassInfo.items():
         try:
-            if int(i['train']) < limit:
+            trainImgs = int(float(i['train']))
+
+            if trainImgs < limit:
                 print('Combining train, test and validation imags for class: ' + i['class_name'])
                 # Now move data from test to train
                 
@@ -129,7 +147,7 @@ def getPrepareData(model, limit):
     # # Call the OIDV6 script from here
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
-                        'renamed_class_names.csv')
+                        classRenameDict)
 
     # Copy to separate VOC folder
     os.makedirs('datasets/' + model + '/VOCdevkit/', exist_ok=True)
@@ -143,19 +161,28 @@ def getPrepareData(model, limit):
         os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
         os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
 
-    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
+    voc2007dir = 'datasets/' + model + '/VOCdevkit/VOC2007/'
+    os.makedirs(voc2007dir, exist_ok=True)
+
+    # Download LVIS categories, if any
+    if 'lvis' in downloadList:
+        if len(downloadList['lvis']) > 0:
+            print("---- Downloading LVIS data ------")
+            getLVISbyCategories('val', downloadList['lvis'], voc2007dir, classRenameDict, limit)
+            getLVISbyCategories('train', downloadList['lvis'], voc2007dir, classRenameDict, limit)
 
     # Make the final conversion to VOC
     print("Making the final conversion to VOC, creating trainval and test samples")
     convertvoc('datasets/' + model + '/VOCdevkit/')
 
-    print("Copying files...")
-    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2012/', exist_ok=True)
+    # We probably don't need two identical copies of the files...
+    # print("Copying files...")
+    # os.makedirs('datasets/' + model + '/VOCdevkit/VOC2012/', exist_ok=True)
     
-    if os.name == 'nt':
-        os.system('powershell Copy-Item -Path ' + cwd + '\\datasets\\' +  model + '\\VOCdevkit\\VOC2007\\* -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2012\\ -Recurse')
-    else:
-        os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
+    # if os.name == 'nt':
+    #     os.system('powershell Copy-Item -Path ' + cwd + '\\datasets\\' +  model + '\\VOCdevkit\\VOC2007\\* -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2012\\ -Recurse')
+    # else:
+    #     os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
 
 
     # Create the class files in COCO and VOC format
@@ -181,31 +208,53 @@ def getPrepareData(model, limit):
 
     # Create the training script
     print("Number of classes: " + str(len(finalClassNames)))
-    
+    specificNano = []
 
-    scriptFile = 'train-' + model + '.sh'
+    # Copy the nano_custom file, change number of classes
+    with open('exps/example/yolox_voc/yolox_voc_nano_custom.py') as f:
+        nano = f.readlines()
+
+        firstEncounter = True
+
+        for line in nano:
+            if firstEncounter and 'self.num_classes' in line:
+                firstEncounter = False
+                mod = '        self.num_classes = {}'.format(len(finalClassNames))
+                specificNano.append(mod)
+            else:
+                specificNano.append(line)
+
+    with open('exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model)) as f:
+        f.writelines(specificNano)
+
+    scriptFile = 'train-' + model + '.sh'    
 
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
         # TODO: CREATE setup for weights and biases
-        f.write('python3.9 tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
+        f.write('python tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
 
     os.system('chmod +x ' + scriptFile)
 
     print("Run {} to start training".format(scriptFile))
 
     ## TODO: Write script for evaluation here
+    scriptFile = 'evaluate-' + model + '.sh'
+
+    with open(scriptFile, 'w') as f:
+        f.write('#!/bin/bash\n')
+        f.write('python3.9 tools/eval.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
+
+        # TODO: CREATE setup for weights and biases
 
 
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
-    parser.add_argument('--model', type=str, default="animal", help="Name of the model. Make sure that appropriate csv file is provided")
-    parser.add_argument('--limit', type=int, default="3000", help="Maximum number of images per class that are downloaded")
+    parser.add_argument('--model', type=str, default="sporthobby", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--limit', type=int, default="50", help="Maximum number of images per class that are downloaded")
 
     args = parser.parse_args()
-
-    print(args)
 
     getPrepareData(args.model, args.limit)
 

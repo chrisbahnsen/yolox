@@ -12,17 +12,19 @@ from pathlib import Path
 from shutil import move
 import argparse
 import csv
-import tqdm
+from tqdm import tqdm
 
-def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
+def convertFromOidv6ToVoc(sourcepath, dest_path, classRenameDict):
 
-    classRenameDict = dict()
+    if type(classRenameDict) == str:
+        rename_class_file = classRenameDict
+        classRenameDict = dict()
 
-    with open(rename_class_file, 'r') as f:
-        reader = csv.DictReader(f)
+        with open(rename_class_file, 'r') as f:
+            reader = csv.DictReader(f)
 
-        for row in reader:
-            classRenameDict[row['class_name']] = row['renamed_class_name']
+            for row in reader:
+                classRenameDict[row['class_name']] = row['renamed_class_name']
 
     ids = []
     for file in os.listdir(sourcepath): #Save all images in a list
@@ -35,6 +37,13 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, rename_class_file):
         myfile = Path(myfile)
         if not myfile.exists(): #if file is not existing 
             txtfile = os.path.join(sourcepath, 'labels', fname + '.txt') #Read annotation of each image from txt file
+
+            if not os.path.exists(txtfile):
+                # Delete the corresponding jpg file
+                print("No annotation for {}, removing this image".format(fname))
+                os.remove(os.path.join(sourcepath, fname + '.jpg'))
+                continue
+
             f = open(txtfile,"r")
             imgfile = os.path.join(sourcepath, fname +'.jpg')
             img = cv2.imread(imgfile, cv2.IMREAD_UNCHANGED) #Read image to get image width and height

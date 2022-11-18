@@ -4,7 +4,7 @@ import random
 import sys
 from pathlib import Path
 import argparse
-import tqdm
+from tqdm import tqdm
 
 def shufflelines(filepath):
     lines = open(filepath, 'r').readlines()
@@ -53,15 +53,20 @@ def convertvoc(root_path):
     # class_name_prefix_and_other_info.xml -> "class_name_prefix_and_other" -> class name
 
     xml_grouped_by_class = dict()
+    xml_grouped_by_class['other'] = []
 
     for x in total_xml:
         spl = x.split('_')    
         class_name = '_'.join(spl[:-1])
 
-        if not class_name in xml_grouped_by_class:
-            xml_grouped_by_class[class_name] = [x]
-        else:
-            xml_grouped_by_class[class_name].append(x)
+        if len(spl) > 1:
+            if not class_name in xml_grouped_by_class:
+                xml_grouped_by_class[class_name] = [x]
+            else:
+                xml_grouped_by_class[class_name].append(x)
+        else: 
+            # The XML file does not originate from Google Open Images
+            xml_grouped_by_class['other'].append(x)
 
     ptrainval = txtsavepath + '/trainval.txt'
     ptest = txtsavepath + '/test.txt'
