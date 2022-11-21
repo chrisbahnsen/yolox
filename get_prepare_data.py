@@ -249,15 +249,22 @@ def getPrepareData(model, limit):
     scriptFile = 'evaluate-' + model + '.sh'
 
     with open(scriptFile, 'w') as f:
-        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'
+        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
 
         f.write('#!/bin/bash\n')
         f.write('python tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
 
     print("Run {} to evaluate the trained model".format(scriptFile))
 
-    ## TODO: Write script for converting the model here
+    scriptFile = 'convert-' + model + '-toTFLite.sh'
 
+    with open(scriptFile, 'w') as f:
+        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
+        onnxPath = 'YOLOX-outputs/{}/{}.onnx'.format(onnxPath, model)
+
+        f.write('#!/bin/bash\n')
+        f.write('python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath))
+        f.write('python tools/convertToTflite.py --modelPath {onnxPath}')
 
 
 

@@ -4,7 +4,7 @@ from onnx_tf.backend import prepare
 import argparse
 
 
-def convertToTflte(onnxPath):
+def convertToTflite(onnxPath):
     
 
     onnx_model = onnx.load(onnxPath)
@@ -27,4 +27,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    convertToTflte(args.modelPath)
+    convertToTflite(args.modelPath)
