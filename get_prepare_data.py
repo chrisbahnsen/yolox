@@ -46,6 +46,7 @@ def getPrepareData(model, limit):
                 className = row['class_name']
             elif 'class' in row:
                 className = row['class']
+                row['class_name'] = row['class']
             else:
                 raise RuntimeError("The file {} should contain a column named \'class\'".format(csvPath))
 
@@ -151,9 +152,9 @@ def getPrepareData(model, limit):
         except Exception as e:
             print(e)
 
-    # # Combine the newly acquired data
+    # Combine the newly acquired data
 
-    # # Call the OIDV6 script from here
+    # Call the OIDV6 script from here
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
                         classRenameDict)

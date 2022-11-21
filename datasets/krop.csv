@@ -20,10 +20,10 @@
 18,eyebrow,,,,,PASCAL-parts
 19,foot,,,,,PASCAL-parts
 20,hand,,,,,PASCAL-parts
-21,lower arm,,,,,PASCAL-parts
-22,lower leg,,,,,PASCAL-parts
-23,upper arm,,,,,PASCAL-parts
-24,upper leg,,,,,PASCAL-parts
+21,lower arm,,,,arm,PASCAL-parts
+22,lower leg,,,,leg,PASCAL-parts
+23,upper arm,,,,arm,PASCAL-parts
+24,upper leg,,,,leg,PASCAL-parts
 25,mouth,,,,,PASCAL-parts
 26,neck,,,,,PASCAL-parts
 27,nose,,,,,PASCAL-parts

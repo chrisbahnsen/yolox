@@ -4,6 +4,7 @@ import os
 from tqdm import tqdm
 from xmltodict import unparse
 import wget
+import time
 
 BBOX_OFFSET = 0
 
@@ -163,8 +164,15 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
 
     # Download images
     for imageId in tqdm(imageids, "Downloading LVIS {} images...".format(chosenSet)):
-        anns.download(os.path.join(dstFolder, 'JPEGImages'), 
-                      [imageId])
+        try:
+            anns.download(os.path.join(dstFolder, 'JPEGImages'), 
+                        [imageId])
+        except ConnectionError as e:
+            print("Connection hiccup, trying again in 1 sec...")
+            time.sleep(1)
+            anns.download(os.path.join(dstFolder, 'JPEGImages'), 
+                        [imageId])
+
 
     selectedAnnotations = dict()
     selectedAnnotations['categories'] = selectedCatInfo
