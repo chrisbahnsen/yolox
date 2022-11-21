@@ -56,6 +56,7 @@ def convertCOCOtoVOC(cats, imags, anns, dst_base, classRenameDict):
 
     for an in tqdm(anns, "Parse Annotations"):
         catName = cate[an['category_id']]
+        catName = catName.replace('_', ' ')
         renamedCatName = classRenameDict[catName]
 
         ann = base_object(images[an['image_id']]['annotation']["size"], renamedCatName, an['bbox'])
@@ -117,8 +118,6 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
         catIndices[cat['name'].lower()] = cat['id']
         catlist.append(cat['name'].lower())
 
-        classRenameDict[cat['name']] = cat['name']
-
     extractCats = []
     extractIndices = []
 
@@ -128,7 +127,12 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
         matches = [c for c in catlist if cat == c]
 
         if len(matches) == 0:
+            # Try a more gentle approach to take missing words into account
+            matches = [c for c in catlist if cat in c]
+            
             print("Could not find match in LVIS database for {}".format(cat))
+            print("Closest matches: {}".format(matches))
+            matches = []
 
         for match in matches:
             extractCats.append(match)
@@ -147,6 +151,8 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
         # Only get the first 'limit' ann ids
         if len(tempAnnIds) > limit:
             annIds.extend(tempAnnIds[:limit])
+        else:
+            annIds.extend(tempAnnIds)
 
 
     lvisanns = anns.load_anns(ids=annIds)
@@ -156,7 +162,7 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
         imageids.add(ann['image_id'])
 
     # Download images
-    for imageId in tqdm(imageids, "Downloading LVIS images..."):
+    for imageId in tqdm(imageids, "Downloading LVIS {} images...".format(chosenSet)):
         anns.download(os.path.join(dstFolder, 'JPEGImages'), 
                       [imageId])
 
@@ -165,9 +171,6 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
 
     selectedAnnotations['images'] = anns.load_imgs(imageids)
     selectedAnnotations['annotations'] = lvisanns
-
-    # with open('selectedAnns.json', 'w') as f:
-    #     json.dump(selectedAnnotations, f)
 
     convertCOCOtoVOC(selectedCatInfo, 
                     selectedAnnotations['images'], 

@@ -18,19 +18,6 @@ def convertvoc(root_path):
     imagefilepath = root_path + 'VOC2007/JPEGImages/'
     os.makedirs(imagefilepath, exist_ok = True)
 
-    filenames = os.listdir(root_path)
-
-    # Move annotations to annotations folder
-    for filename in tqdm(filenames, "Moving files to VOC2007 folder"):
-        if filename.endswith('.xml'):
-            with open(os.path.join(root_path, filename)) as f:
-                Path(root_path + filename).rename(xmlfilepath + filename)
-
-        if filename.endswith('.jpg'):
-            with open(os.path.join(root_path, filename)) as f:
-                Path(root_path + filename).rename(imagefilepath + filename)
-
-
     txtsavepath = root_path + '/VOC2007/ImageSets/Main'
 
     if not os.path.exists(root_path):

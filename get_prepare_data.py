@@ -49,6 +49,10 @@ def getPrepareData(model, limit):
             else:
                 raise RuntimeError("The file {} should contain a column named \'class\'".format(csvPath))
 
+            # Remove leading or trailing spaces from the name
+            className = className.strip()
+            className = className.lower()
+
             downloadList[database].append(className)    
 
             renamedClassName = ""
@@ -71,7 +75,8 @@ def getPrepareData(model, limit):
 
     # Search for images that are already downloaded to 
     # another directory
-    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/', exist_ok=True)
+    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/Annotations', exist_ok=True)
+    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages', exist_ok=True)
 
     for cls in downloadList['oid']:
         clsName = cls.replace(' ', '_')
@@ -95,7 +100,11 @@ def getPrepareData(model, limit):
             for m in tqdm(matches, 'Copying images to {}'.format(join('datasets', model, 'VOCdevkit'))):
                 # We only move the 2007 data as we will copy the 2012 data later
                 if ('2007' in m or '2012' in m) and model not in m:
-                    d = join('datasets', model, 'VOCdevkit', basename(m))
+                    if 'xml' in m:
+                        d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'Annotations', basename(m))
+                    else: 
+                        d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'JPEGImages', basename(m))
+
                     move(m, d)
 
     classListPath = os.path.join('datasets', "{}.txt".format(model))
@@ -150,19 +159,16 @@ def getPrepareData(model, limit):
                         classRenameDict)
 
     # Copy to separate VOC folder
-    os.makedirs('datasets/' + model + '/VOCdevkit/', exist_ok=True)
-
     print("Moving data, hold tight...")
     if os.name == 'nt':
         cwd = os.getcwd()
         os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\')
         os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\')
     else:
-        os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
-        os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/')
+        os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages')
+        os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages')
 
     voc2007dir = 'datasets/' + model + '/VOCdevkit/VOC2007/'
-    os.makedirs(voc2007dir, exist_ok=True)
 
     # Download LVIS categories, if any
     if 'lvis' in downloadList:
@@ -224,7 +230,7 @@ def getPrepareData(model, limit):
             else:
                 specificNano.append(line)
 
-    with open('exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model)) as f:
+    with open('exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model), 'w') as f:
         f.writelines(specificNano)
 
     scriptFile = 'train-' + model + '.sh'    
@@ -251,8 +257,8 @@ def getPrepareData(model, limit):
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
-    parser.add_argument('--model', type=str, default="sporthobby", help="Name of the model. Make sure that appropriate csv file is provided")
-    parser.add_argument('--limit', type=int, default="50", help="Maximum number of images per class that are downloaded")
+    parser.add_argument('--model', type=str, default="inde", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--limit', type=int, default="5000", help="Maximum number of images per class that are downloaded")
 
     args = parser.parse_args()
 
