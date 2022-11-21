@@ -15,6 +15,7 @@ wget
 xmltodict
 openpyxl
 pandas
+wandb==0.13.3
 
 # verified versions
 # pycocotools corresponds to https://github.com/ppwwyyxx/cocoapi

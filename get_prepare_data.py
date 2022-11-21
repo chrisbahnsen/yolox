@@ -246,14 +246,19 @@ def getPrepareData(model, limit):
 
     print("Run {} to start training".format(scriptFile))
 
-    ## TODO: Write script for evaluation here
     scriptFile = 'evaluate-' + model + '.sh'
 
     with open(scriptFile, 'w') as f:
         epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'
 
         f.write('#!/bin/bash\n')
-        f.write('python3.9 tools/eval.py -n {} -c {} -b 4 -d1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
+        f.write('python tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
+
+    print("Run {} to evaluate the trained model".format(scriptFile))
+
+    ## TODO: Write script for converting the model here
+
+
 
 
 if __name__ == '__main__':
