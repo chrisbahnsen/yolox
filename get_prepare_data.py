@@ -91,7 +91,7 @@ def getPrepareData(model, limit):
         numMatches = int(len(matches) / 2)
         trainImgs = int(float(fullClassInfo[cls]['train']))
 
-        if numMatches >= trainImgs:
+        if numMatches >= trainImgs or numMatches >= limit:
             # No need to re-download this class, plenty of existing data
             # already
             downloadList['oid'].remove(cls)
