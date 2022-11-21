@@ -87,7 +87,7 @@ def getPrepareData(model, limit):
             matches.append(str(path))
 
         # We find both jpg and xml files, which count as one
-        numMatches = len(matches) / 2
+        numMatches = int(len(matches) / 2)
         trainImgs = int(float(fullClassInfo[cls]['train']))
 
         if numMatches >= trainImgs:
@@ -215,6 +215,7 @@ def getPrepareData(model, limit):
     # Create the training script
     print("Number of classes: " + str(len(finalClassNames)))
     specificNano = []
+    specificNanoPath = 'exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model)
 
     # Copy the nano_custom file, change number of classes
     with open('exps/example/yolox_voc/yolox_voc_nano_custom.py') as f:
@@ -230,7 +231,7 @@ def getPrepareData(model, limit):
             else:
                 specificNano.append(line)
 
-    with open('exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model), 'w') as f:
+    with open(specificNanoPath, 'w') as f:
         f.writelines(specificNano)
 
     scriptFile = 'train-' + model + '.sh'    
@@ -238,7 +239,8 @@ def getPrepareData(model, limit):
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
         # TODO: CREATE setup for weights and biases
-        f.write('python tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
+        f.write('python tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
+                + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + model)
 
     os.system('chmod +x ' + scriptFile)
 
@@ -248,10 +250,10 @@ def getPrepareData(model, limit):
     scriptFile = 'evaluate-' + model + '.sh'
 
     with open(scriptFile, 'w') as f:
-        f.write('#!/bin/bash\n')
-        f.write('python3.9 tools/eval.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 8 --fp16 -c yolox_nano.pth -a ' + model + ' -u ' + str(len(finalClassNames)))
+        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'
 
-        # TODO: CREATE setup for weights and biases
+        f.write('#!/bin/bash\n')
+        f.write('python3.9 tools/eval.py -n {} -c {} -b 4 -d1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
 
 
 if __name__ == '__main__':
