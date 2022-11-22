@@ -58,7 +58,7 @@ class AnnotationTransform(object):
                 difficult = False
             if not self.keep_difficult and difficult:
                 continue
-            name = obj.find("name").text.strip()
+            name = obj.find("name").text.strip().lower()
             bbox = obj.find("bndbox")
 
             pts = ["xmin", "ymin", "xmax", "ymax"]
@@ -130,6 +130,14 @@ class VOCDetection(Dataset):
 
         self.annotations = self._load_coco_annotations()
         self.imgs = None
+        self.cats = []
+
+        for id, name in zip(VOC_CLASSES, range(len(VOC_CLASSES))):
+            entry = dict()
+            entry['id'] = id
+            entry['name'] = name
+            self.cats.append(entry)
+
         if cache:
             self._cache_images()
 

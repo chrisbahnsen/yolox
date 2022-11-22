@@ -5,6 +5,7 @@ from pathlib import Path
 from shutil import move
 from os.path import basename, join
 from tqdm import tqdm
+from xmltodict import unparse, parse
 from oidv6 import OIDv6
 
 from oidv6_to_voc import convertFromOidv6ToVoc
@@ -89,7 +90,6 @@ def getPrepareData(model, limit):
         matches = []
 
         for path in Path('datasets').rglob(clsName + "*"):
-            #print(path)
             matches.append(str(path))
 
         # We find both jpg and xml files, which count as one
@@ -117,11 +117,11 @@ def getPrepareData(model, limit):
         else:
             prunedDownloadList.append(cls)
 
-    downloadList['oid'] = prunedDownloadList
+
     classListPath = os.path.join('datasets', "{}.txt".format(model))
 
     with open(classListPath, 'w') as f:
-        for c in downloadList['oid']:
+        for c in prunedDownloadList:
             f.write(c + '\n')
 
 
@@ -171,7 +171,7 @@ def getPrepareData(model, limit):
                         oidTrainPath,
                         oidTrainPath,
                         classRenameDict, 
-                        deleteImagesWithNoAnn=True)
+                        deleteImagesWithNoAnn=False)
 
     # And make sure that files that was found elsewhere are properly renamed, too
     convertFromOidv6ToVoc(model + '/multidata/train/labels', 
@@ -192,7 +192,6 @@ def getPrepareData(model, limit):
         os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/Annotations')
 
     voc2007dir = 'datasets/' + model + '/VOCdevkit/VOC2007/'
-
     # Download LVIS categories, if any
     if 'lvis' in downloadList:
         if len(downloadList['lvis']) > 0:
@@ -200,25 +199,68 @@ def getPrepareData(model, limit):
             getLVISbyCategories('val', downloadList['lvis'], voc2007dir, classRenameDict, limit)
             getLVISbyCategories('train', downloadList['lvis'], voc2007dir, classRenameDict, limit)
 
-    # Make the final conversion to VOC
-    print("Making the final conversion to VOC, creating trainval and test samples")
-    convertvoc('datasets/' + model + '/VOCdevkit/')
-
-    # We probably don't need two identical copies of the files...
-    # print("Copying files...")
-    # os.makedirs('datasets/' + model + '/VOCdevkit/VOC2012/', exist_ok=True)
-    
-    # if os.name == 'nt':
-    #     os.system('powershell Copy-Item -Path ' + cwd + '\\datasets\\' +  model + '\\VOCdevkit\\VOC2007\\* -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2012\\ -Recurse')
-    # else:
-    #     os.system('cp -r datasets/' + model + '/VOCdevkit/VOC2007/. datasets/' + model + '/VOCdevkit/VOC2012')
-
-
-    # Create the class files in COCO and VOC format
     finalClassNames = set()
 
     for oldClassName, finalClassName in classRenameDict.items():
         finalClassNames.add(finalClassName)
+
+
+    # Check if there are annotations with classes that we don't support
+    annPath = os.path.join(voc2007dir, 'Annotations')
+    allAnns = os.listdir(annPath)
+
+    for a in tqdm(allAnns, "Checking annotations"):
+
+        deleteAnn = False
+        renameAnn = False
+        ann = []
+        
+        with open(os.path.join(annPath, a), 'r') as f:
+            ann = parse(f.read())
+
+            if type(ann['annotation']['object']) == dict:
+                name = ann['annotation']['object']['name'] 
+                if name not in finalClassNames:
+                    # Try to check if we can rename 
+                    # this object
+                    if name in classRenameDict:
+                        ann['annotation']['object']['name'] = classRenameDict[name]
+                        renameAnn = True
+                    else:
+                        deleteAnn = True
+            else:
+                # List of dicts
+                for object in ann['annotation']['object']:
+                    if object['name'] not in finalClassNames:
+                        # Try to check if we can rename 
+                        # this object
+                        if object['name'] in classRenameDict:
+                            object['name'] = classRenameDict[object['name']]
+                            renameAnn = True
+                        else:
+                            deleteAnn = True
+
+        if deleteAnn:
+            print("Deleting, not in class list: {}".format(a))
+            try:
+                os.remove(os.path.join(annPath, a))
+                os.remove(os.path.join(voc2007dir, 'JPEGImages', a.replace('.xml', '.jpg')))
+            except OSError:
+                pass
+                    
+        if renameAnn:
+            # Save the renamed annotation
+            with open(os.path.join(annPath, a), 'w') as f:
+                unparse(ann, f, full_document=False, pretty=True)         
+
+
+
+    # Make the final conversion to VOC
+    print("Making the final conversion to VOC, creating trainval and test samples")
+    convertvoc('datasets/' + model + '/VOCdevkit/')
+
+
+    # Create the class files in COCO and VOC format
 
     with open('yolox/data/datasets/voc_classes.py', 'w') as f:
         f.write('VOC_CLASSES = (\n')
