@@ -16,6 +16,13 @@ from tqdm import tqdm
 
 def convertFromOidv6ToVoc(sourcepath, dest_path, classRenameDict):
 
+    ann_path = os.path.join(sourcepath, 'labels')
+    image_path = sourcepath
+
+    convertFromOidv6ToVoc(ann_path, image_path, dest_path, classRenameDict, deleteImagesWithNoAnn=False)
+
+def convertFromOidv6ToVoc(ann_path, image_path, dest_path, classRenameDict, deleteImagesWithNoAnn=True):
+
     if type(classRenameDict) == str:
         rename_class_file = classRenameDict
         classRenameDict = dict()
@@ -27,7 +34,7 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, classRenameDict):
                 classRenameDict[row['class_name']] = row['renamed_class_name']
 
     ids = []
-    for file in os.listdir(sourcepath): #Save all images in a list
+    for file in os.listdir(image_path): #Save all images in a list
         filename = os.fsdecode(file)
         if filename.endswith('.jpg'):
             ids.append(filename[:-4])
@@ -36,16 +43,16 @@ def convertFromOidv6ToVoc(sourcepath, dest_path, classRenameDict):
         myfile = os.path.join(dest_path,fname +'.xml')
         myfile = Path(myfile)
         if not myfile.exists(): #if file is not existing 
-            txtfile = os.path.join(sourcepath, 'labels', fname + '.txt') #Read annotation of each image from txt file
+            txtfile = os.path.join(ann_path, fname + '.txt') #Read annotation of each image from txt file
 
-            if not os.path.exists(txtfile):
+            if not os.path.exists(txtfile) and deleteImagesWithNoAnn:
                 # Delete the corresponding jpg file
                 print("No annotation for {}, removing this image".format(fname))
-                os.remove(os.path.join(sourcepath, fname + '.jpg'))
+                os.remove(os.path.join(image_path, fname + '.jpg'))
                 continue
 
             f = open(txtfile,"r")
-            imgfile = os.path.join(sourcepath, fname +'.jpg')
+            imgfile = os.path.join(image_path, fname +'.jpg')
             img = cv2.imread(imgfile, cv2.IMREAD_UNCHANGED) #Read image to get image width and height
             
             if img is None:

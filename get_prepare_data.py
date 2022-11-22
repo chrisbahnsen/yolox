@@ -92,7 +92,10 @@ def getPrepareData(model, limit):
 
         # We find both jpg and xml files, which count as one
         numMatches = int(len(matches) / 2)
-        trainImgs = int(float(fullClassInfo[cls]['train']))
+
+        # There might be errors in the numbers reported in the spreadsheet, 
+        # so in order to avoid too many re-downloads, we relax this criteria
+        trainImgs = int(float(fullClassInfo[cls]['train'])) * 0.6 
 
         if numMatches >= trainImgs or numMatches >= limit:
             # No need to re-download this class, plenty of existing data
@@ -161,6 +164,13 @@ def getPrepareData(model, limit):
     convertFromOidv6ToVoc(model + '/multidata/train', 
                         model + '/multidata/train',
                         classRenameDict)
+
+    # And make sure that files that was found elsewhere are properly renamed, too
+    convertFromOidv6ToVoc(model + '/multidata/train/labels', 
+                         'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
+                         'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
+                         classRenameDict)
+
 
     # Copy to separate VOC folder
     print("Moving data, hold tight...")
