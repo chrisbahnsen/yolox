@@ -45,10 +45,12 @@ def convertFromOidv6ToVoc(ann_path, image_path, dest_path, classRenameDict, dele
         if not myfile.exists(): #if file is not existing 
             txtfile = os.path.join(ann_path, fname + '.txt') #Read annotation of each image from txt file
 
-            if not os.path.exists(txtfile) and deleteImagesWithNoAnn:
+            if not os.path.exists(txtfile):
                 # Delete the corresponding jpg file
                 print("No annotation for {}, removing this image".format(fname))
-                os.remove(os.path.join(image_path, fname + '.jpg'))
+
+                if deleteImagesWithNoAnn:
+                    os.remove(os.path.join(image_path, fname + '.jpg'))
                 continue
 
             f = open(txtfile,"r")

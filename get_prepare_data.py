@@ -161,15 +161,20 @@ def getPrepareData(model, limit):
     # Combine the newly acquired data
 
     # Call the OIDV6 script from here
-    convertFromOidv6ToVoc(model + '/multidata/train', 
-                        model + '/multidata/train',
-                        classRenameDict)
+    oidTrainPath = os.path.join(model + '/multidata/train')
+
+    convertFromOidv6ToVoc(os.path.join(oidTrainPath, 'labels'), 
+                        oidTrainPath,
+                        oidTrainPath,
+                        classRenameDict, 
+                        deleteImagesWithNoAnn=True)
 
     # And make sure that files that was found elsewhere are properly renamed, too
     convertFromOidv6ToVoc(model + '/multidata/train/labels', 
                          'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
                          'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
-                         classRenameDict)
+                         classRenameDict,
+                         deleteImagesWithNoAnn=False)
 
 
     # Copy to separate VOC folder
