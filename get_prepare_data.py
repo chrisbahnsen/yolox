@@ -97,7 +97,7 @@ def getPrepareData(model, limit):
 
         # There might be errors in the numbers reported in the spreadsheet, 
         # so in order to avoid too many re-downloads, we relax this criteria
-        trainImgs = int(float(fullClassInfo[cls]['train']))* 0.4)
+        trainImgs = int(float(fullClassInfo[cls]['train'])* 0.4)
 
         if numMatches >= trainImgs or numMatches >= limit:
             # No need to re-download this class, plenty of existing data
