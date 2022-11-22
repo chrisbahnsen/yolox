@@ -36,7 +36,7 @@
 34,digital_clock,169.0,41.0,8.0,clock,OID
 35,doll,3383.0,163.0,67.0,,OID
 36,door,13382.0,546.0,204.0,,OID
-37,door_handle,568.0,101.0,30.0,doorknop,OID
+37,door_handle,568.0,101.0,30.0,doorknob,OID
 38,drawer,1623.0,257.0,99.0,,OID
 39,fireplace,685.0,73.0,41.0,,OID
 40,flag,8402.0,215.0,74.0,,OID
@@ -145,7 +145,7 @@
 143,clock,2106.0,,,,LVIS
 144,lamp,2067.0,,,,LVIS
 145,box,1997.0,,,,LVIS
-146,doorknop,1948.0,,,,LVIS
+146,doorknob,1948.0,,,,LVIS
 147,Kite,1920.0,,,,LVIS
 148,sink,1869.0,,,,LVIS
 149,suitcase,1831.0,,,,LVIS
@@ -173,13 +173,13 @@
 171,fan,674.0,,,,LVIS
 172,fireplace,603.0,,,,LVIS
 173,soap,598.0,,,,LVIS
-174,bow ribbon,561.0,,,,LVIS
+174,bow (decorative ribbons),561.0,,,bow,LVIS
 175,pot,546.0,,,,LVIS
 176,can,502.0,,,canister,LVIS
 177,newspaper,480.0,,,,LVIS
 178,shower head,432.0,,,shower,LVIS
 179,shower curtain,424.0,,,curtain,LVIS
-180,salt shaker,418.0,,,,LVIS
+180,saltshaker,418.0,,,salt shaker,LVIS
 181,bath towel,405.0,,,towel,LVIS
 182,pen,382.0,,,,LVIS
 183,spatula,353.0,,,,LVIS
@@ -189,7 +189,7 @@
 187,blender,283.0,,,,LVIS
 188,crate,279.0,,,box,LVIS
 189,saucer,278.0,,,,LVIS
-190,pan,276.0,,,frying pan,LVIS
+190,pan (for cooking),276.0,,,frying pan,LVIS
 191,coffee maker,264.0,,,,LVIS
 192,hand towel,229.0,,,towel,LVIS
 193,guitar,221.0,,,,LVIS

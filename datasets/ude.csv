@@ -25,7 +25,7 @@
 23,coin,1224.0,156.0,55.0,,OID
 24,common_sunflower,1570.0,79.0,29.0,sunflower,OID
 25,door,13382.0,546.0,204.0,,OID
-26,door_handle,568.0,101.0,30.0,doorknop,OID
+26,door_handle,568.0,101.0,30.0,doorknob,OID
 27,fire_hydrant,408.0,60.0,15.0,fire hydrant,OID
 28,flag,8402.0,215.0,74.0,,OID
 29,flower,62716.0,6949.0,2336.0,,OID
@@ -83,7 +83,7 @@
 81,Trash can,2155.0,,,,LVIS
 82,License plate,2129.0,,,,LVIS
 83,box,1997.0,,,,LVIS
-84,doorknop,1948.0,,,,LVIS
+84,doorknob,1948.0,,,,LVIS
 85,suitcase,1831.0,,,,LVIS
 86,rearview mirror,1247.0,,,,LVIS
 87,cone,1129.0,,,,LVIS
@@ -95,7 +95,7 @@
 93,newspaper,480.0,,,,LVIS
 94,crate,279.0,,,box,LVIS
 95,saucer,278.0,,,,LVIS
-96,pan,276.0,,,frying pan,LVIS
+96,pan (for cooking),276.0,,,frying pan,LVIS
 97,christmas tree,247.0,,,,LVIS
 98,guitar,221.0,,,,LVIS
 99,wheelchair,90.0,,,,LVIS
