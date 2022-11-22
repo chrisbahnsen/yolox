@@ -82,6 +82,8 @@ def getPrepareData(model, limit):
     os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/Annotations', exist_ok=True)
     os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages', exist_ok=True)
 
+    prunedDownloadList = []
+
     for cls in downloadList['oid']:
         clsName = cls.replace(' ', '_')
         matches = []
@@ -95,12 +97,11 @@ def getPrepareData(model, limit):
 
         # There might be errors in the numbers reported in the spreadsheet, 
         # so in order to avoid too many re-downloads, we relax this criteria
-        trainImgs = int(float(fullClassInfo[cls]['train'])) * 0.6 
+        trainImgs = int(float(fullClassInfo[cls]['train']))* 0.4)
 
         if numMatches >= trainImgs or numMatches >= limit:
             # No need to re-download this class, plenty of existing data
             # already
-            downloadList['oid'].remove(cls)
             print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
 
             # Now move this data
@@ -113,7 +114,10 @@ def getPrepareData(model, limit):
                         d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'JPEGImages', basename(m))
 
                     move(m, d)
+        else:
+            prunedDownloadList.append(cls)
 
+    downloadList['oid'] = prunedDownloadList
     classListPath = os.path.join('datasets', "{}.txt".format(model))
 
     with open(classListPath, 'w') as f:
