@@ -67,6 +67,9 @@ def getPrepareData(model, limit):
             else:
                 raise RuntimeError("The file {} should contain a column named \'rename\'".format(csvPath))
 
+            renamedClassName = renamedClassName.strip()
+            renamedClassName = renamedClassName.lower()
+
             if renamedClassName:
                 classRenameDict[className.replace('_', ' ')] = renamedClassName.replace('_', ' ')
             else:
@@ -239,7 +242,6 @@ def getPrepareData(model, limit):
 
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
-        # TODO: CREATE setup for weights and biases
         f.write('python tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
                 + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + model)
 
@@ -261,7 +263,7 @@ def getPrepareData(model, limit):
 
     with open(scriptFile, 'w') as f:
         epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
-        onnxPath = 'YOLOX-outputs/{}/{}.onnx'.format(onnxPath, model)
+        onnxPath = 'YOLOX-outputs/{}/{}.onnx'.format(model, model)
 
         f.write('#!/bin/bash\n')
         f.write('python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath))
