@@ -261,7 +261,6 @@ def getPrepareData(model, limit):
 
 
     # Create the class files in COCO and VOC format
-
     with open('yolox/data/datasets/voc_classes.py', 'w') as f:
         f.write('VOC_CLASSES = (\n')
         for className in finalClassNames:
@@ -276,11 +275,18 @@ def getPrepareData(model, limit):
         
         f.write(')')
 
+    # Write the class list for consumption by NatML
+    classListPath = os.path.join('datasets', "{}-NatML.txt".format(model))
+    
+    with open(classListPath, 'w') as f:
+        for className in finalClassNames:
+            f.write('{}\n'.format(className)
+
 
     # Create the training script
     print("Number of classes: " + str(len(finalClassNames)))
     specificNano = []
-    specificNanoPath = 'exps/example/yolox_voc/yolox_voc_nano_{}.py'.format(model)
+    specificNanoPath = 'exps/example/yolox_voc/{}.py'.format(model)
 
     # Copy the nano_custom file, change number of classes
     with open('exps/example/yolox_voc/yolox_voc_nano_custom.py') as f:
@@ -299,7 +305,13 @@ def getPrepareData(model, limit):
     with open(specificNanoPath, 'w') as f:
         f.writelines(specificNano)
 
-    scriptFile = 'train-' + model + '.sh'    
+    if os.name == 'nt':
+        scriptExt =  '.bat'
+    else:
+        scriptExt =  '.sh'
+
+
+    scriptFile = 'train-' + model + scriptExt  
 
     with open(scriptFile, 'w') as f:
         f.write('#!/bin/bash\n')
@@ -310,7 +322,7 @@ def getPrepareData(model, limit):
 
     print("Run {} to start training".format(scriptFile))
 
-    scriptFile = 'evaluate-' + model + '.sh'
+    scriptFile = 'evaluate-' + model + scriptExt
 
     with open(scriptFile, 'w') as f:
         epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
@@ -320,7 +332,7 @@ def getPrepareData(model, limit):
 
     print("Run {} to evaluate the trained model".format(scriptFile))
 
-    scriptFile = 'convert-' + model + '-toTFLite.sh'
+    scriptFile = 'convert-' + model + '-toTFLite' + scriptExt
 
     with open(scriptFile, 'w') as f:
         epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
