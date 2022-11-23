@@ -58,6 +58,7 @@ def convertCOCOtoVOC(cats, imags, anns, dst_base, classRenameDict):
     for an in tqdm(anns, "Parse Annotations"):
         catName = cate[an['category_id']]
         catName = catName.replace('_', ' ')
+        catName = catName.lower()
         renamedCatName = classRenameDict[catName]
 
         ann = base_object(images[an['image_id']]['annotation']["size"], renamedCatName, an['bbox'])
