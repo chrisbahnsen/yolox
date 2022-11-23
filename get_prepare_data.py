@@ -149,16 +149,22 @@ def getPrepareData(model, limit):
                 print('Combining train, test and validation imags for class: ' + i['class_name'])
                 # Now move data from test to train
                 
-                # First images
-                os.system('find ' + model + '/multidata/test/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
+                if os.name == 'nt':
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\')
 
-                # Then labels
-                os.system('find ' + model + '/multidata/test/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
-                        #'find \'OIDv6/multidata/test/ -name ' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' OIDv6/multidata/train/ \;' 
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\')
+                else:
+                    # First images
+                    os.system('find ' + model + '/multidata/test/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
+                    # Then labels
+                    os.system('find ' + model + '/multidata/test/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
+                            #'find \'OIDv6/multidata/test/ -name ' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' OIDv6/multidata/train/ \;' 
 
-                # And from val to train
-                os.system('find ' + model + '/multidata/validation/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
-                os.system('find ' + model + '/multidata/validation/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
+                    # And from val to train
+                    os.system('find ' + model + '/multidata/validation/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
+                    os.system('find ' + model + '/multidata/validation/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
         except Exception as e:
             print(e)
 
