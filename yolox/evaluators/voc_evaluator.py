@@ -8,6 +8,7 @@ import time
 from collections import ChainMap
 from loguru import logger
 from tqdm import tqdm
+import itertools
 
 import numpy as np
 
@@ -108,8 +109,11 @@ class VOCEvaluator:
         statistics = torch.cuda.FloatTensor([inference_time, nms_time, n_samples])
         if distributed:
             data_list = gather(data_list, dst=0)
-            data_list = ChainMap(*data_list)
+            output_data = gather(output_data, dst=0)
+            data_list = list(itertools.chain(*data_list))
+            output_data = dict(ChainMap(*output_data))
             torch.distributed.reduce(statistics, dst=0)
+
 
         eval_results = self.evaluate_prediction(data_list, statistics)
         synchronize()
