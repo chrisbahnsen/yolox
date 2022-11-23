@@ -150,11 +150,11 @@ def getPrepareData(model, limit):
                 # Now move data from test to train
                 
                 if os.name == 'nt':
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\')
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
 
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\')
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
+                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
                 else:
                     # First images
                     os.system('find ' + model + '/multidata/test/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
@@ -191,8 +191,8 @@ def getPrepareData(model, limit):
     print("Moving data, hold tight...")
     if os.name == 'nt':
         cwd = os.getcwd()
-        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\JPEGImages\\')
-        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\Annotations\\')
+        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\JPEGImages\\ -Force')
+        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\Annotations\\ -Force')
     else:
         os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages')
         os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/Annotations')
