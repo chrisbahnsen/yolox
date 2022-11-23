@@ -280,7 +280,7 @@ def getPrepareData(model, limit):
     
     with open(classListPath, 'w') as f:
         for className in finalClassNames:
-            f.write('{}\n'.format(className)
+            f.write('{}\n'.format(className))
 
 
     # Create the training script
