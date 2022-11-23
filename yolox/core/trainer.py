@@ -218,6 +218,11 @@ class Trainer:
     def after_epoch(self):
         self.save_ckpt(ckpt_name="latest")
 
+        if self.args.logger == "wandb":
+            self.wandb_logger.log_metrics({
+                "train/epoch": self.epoch + 1,
+            })
+
         if (self.epoch + 1) % self.exp.eval_interval == 0:
             all_reduce_norm(self.model)
             self.evaluate_and_save_model()
