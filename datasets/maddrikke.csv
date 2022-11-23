@@ -22,7 +22,7 @@
 20,dessert,8466.0,2035.0,642.0,,OID
 21,doughnut,400.0,112.0,45.0,,OID
 22,drink,16071.0,1081.0,356.0,,OID
-23,egg_(food),934.0,237.0,72.0,,OID
+23,egg_(food),934.0,237.0,72.0,egg,OID
 24,flute,243.0,27.0,10.0,bread,OID
 25,french_fries,1121.0,216.0,70.0,french fries,OID
 26,french_horn,336.0,128.0,39.0,french horn,OID
@@ -71,7 +71,7 @@
 69,carrot,1382.0,,,,LVIS
 70,apple,1339.0,,,,LVIS
 71,doughnut,1102.0,,,,LVIS
-72,orange (fruit),921.0,,,,LVIS
+72,orange (fruit),921.0,,,orange,LVIS
 73,cake,918.0,,,,LVIS
 74,lettuce,770.0,,,salad,LVIS
 75,onion,739.0,,,,LVIS
