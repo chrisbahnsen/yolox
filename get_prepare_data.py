@@ -350,7 +350,7 @@ def getPrepareData(model, limit):
 
     # TODO:
     # MAKE RESUME TRAINING SCRIPT
-    # CHMOD ON ALL SCRIPTS
+    # CHMOD ON ALL SCRIPTSimage.png
 
 if __name__ == '__main__':
     

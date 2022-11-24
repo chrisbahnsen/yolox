@@ -85,6 +85,15 @@ def voc_eval(
         lines = f.readlines()
     imagenames = [x.strip() for x in lines]
 
+    # Windows hack; for some reason, this cache file is giving 
+    # us problems. Therefore, make sure that it is deleted
+    if os.name == 'nt':
+        try:
+            os.remove(cachefile)
+        except OSError:
+            print("Could not remove {}".format(cachefile))
+            pass
+
     if not os.path.isfile(cachefile):
         # load annots
         recs = {}

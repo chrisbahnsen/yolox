@@ -203,6 +203,12 @@ class Trainer:
     def before_epoch(self):
         logger.info("---> start train epoch{}".format(self.epoch + 1))
 
+        if self.args.logger == "wandb":
+            self.wandb_logger.log_metrics({
+                "train/epoch": self.epoch + 1,
+            })
+
+
         if self.epoch + 1 == self.max_epoch - self.exp.no_aug_epochs or self.no_aug:
             logger.info("--->No mosaic aug now!")
             self.train_loader.close_mosaic()
