@@ -275,15 +275,18 @@ class VOCDetection(Dataset):
             0.5, 0.95, int(np.round((0.95 - 0.5) / 0.05)) + 1, endpoint=True
         )
         mAPs = []
+        mAPInfos = []
+
         for iou in IouTh:
-            mAP = self._do_python_eval(output_dir, iou)
+            mAP, mAPInfo = self._do_python_eval(output_dir, iou)
             mAPs.append(mAP)
+            mAPInfos.append(mAPInfo)
 
         print("--------------------------------------------------------------")
         print("map_5095:", np.mean(mAPs))
         print("map_50:", mAPs[0])
         print("--------------------------------------------------------------")
-        return np.mean(mAPs), mAPs[0]
+        return np.mean(mAPs), (mAPs[0], mAPInfos[0])
 
     def _get_voc_results_file_template(self):
         filename = "comp4_det_test" + "_{:s}.txt"
@@ -334,6 +337,7 @@ class VOCDetection(Dataset):
         if not os.path.exists(cachedir):
             os.makedirs(cachedir)
         aps = []
+        apInfo = dict()
         # The PASCAL VOC metric changed in 2010
         use_07_metric = True if int(self._year) < 2010 else False
         print("Eval IoU : {:.2f}".format(iou))
@@ -355,6 +359,8 @@ class VOCDetection(Dataset):
                 use_07_metric=use_07_metric,
             )
             aps += [ap]
+            apInfo[cls] = ap
+
             if iou == 0.5:
                 print("AP for {} = {:.4f}".format(cls, ap))
             if output_dir is not None:
@@ -376,4 +382,4 @@ class VOCDetection(Dataset):
             print("-- Thanks, The Management")
             print("--------------------------------------------------------------")
 
-        return np.mean(aps)
+        return np.mean(aps), apInfo

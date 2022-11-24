@@ -341,6 +341,12 @@ class Trainer:
                 evalmodel, self.evaluator, self.is_distributed, return_outputs=True
             )
 
+        if type(ap50) == tuple:
+            # We have buried additional information here
+            # in order to log per-class AP
+            clsScores = ap50[1]
+            ap50 = ap50[0]
+
         update_best_ckpt = ap50_95 > self.best_ap
         self.best_ap = max(self.best_ap, ap50_95)
 
@@ -349,11 +355,16 @@ class Trainer:
                 self.tblogger.add_scalar("val/COCOAP50", ap50, self.epoch + 1)
                 self.tblogger.add_scalar("val/COCOAP50_95", ap50_95, self.epoch + 1)
             if self.args.logger == "wandb":
-                self.wandb_logger.log_metrics({
+                m = {
                     "val/COCOAP50": ap50,
                     "val/COCOAP50_95": ap50_95,
                     "train/epoch": self.epoch + 1,
-                })
+                }
+
+                for cls, score in clsScores.items():
+                    m['val/class/{}/AP'.format(cls.replace(' ', '_'))] = score
+
+                self.wandb_logger.log_metrics(m)
                 self.wandb_logger.log_images(predictions)
             logger.info("\n" + summary)
         synchronize()
