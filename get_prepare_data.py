@@ -12,7 +12,22 @@ from oidv6_to_voc import convertFromOidv6ToVoc
 from voc_txt import convertvoc
 from downloadlvisdata import getLVISbyCategories
 
+def writeScript(filePath, lines, message=None):
+    with open(filePath, 'w') as f:
+        if not os.name == 'nt':        
+            f.write('#!/bin/bash\n')
 
+        if type(lines) == list:
+            f.writelines(lines)
+        else:
+            f.write(lines)
+
+    if not os.name == 'nt':
+        # Make the script runnable
+        os.system('chmod +x ' + filePath)
+
+    if message:
+        print("Run {} {}".format(filePath, message))
 
 def getPrepareData(model, limit):
 
@@ -313,44 +328,37 @@ def getPrepareData(model, limit):
 
     if os.name == 'nt':
         scriptExt =  '.bat'
+        pythonStr = 'python'
     else:
         scriptExt =  '.sh'
+        pythonStr = 'python3'
+
+    trainScript = 'train-' + model + scriptExt  
+    epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
 
 
-    scriptFile = 'train-' + model + scriptExt  
+    lines = [pythonStr + ' tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
+                + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + model]
+    writeScript(trainScript, lines, "to start training")
 
-    with open(scriptFile, 'w') as f:
-        f.write('#!/bin/bash\n')
-        f.write('python tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
-                + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + model)
+    resumeScript = 'resume-' + model + scriptExt  
+    lines = [pythonStr + ' tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c ' + 
+             epochPath + ' -a ' +
+             + model + ' -u ' + str(len(finalClassNames)) + ' --resume --logger wandb wandb-project ' + model]
+    writeScript(resumeScript, lines, "to resume training")
 
-    os.system('chmod +x ' + scriptFile)
+    evaluateScript = 'evaluate-' + model + scriptExt
+    lines = ['{} tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(pythonStr, model, epochPath, specificNanoPath)]
+    writeScript(evaluateScript, lines, "to evaluate the trained model")
 
-    print("Run {} to start training".format(scriptFile))
 
-    scriptFile = 'evaluate-' + model + scriptExt
+    convertScript = 'convert-' + model + '-toTFLite' + scriptExt
+    onnxPath = 'YOLOX_outputs/{}/{}.onnx'.format(model, model)
 
-    with open(scriptFile, 'w') as f:
-        epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
+    lines = ['python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath)]
+    lines.append('{pythonStr} tools/convertToTflite.py --modelPath {onnxPath}')
+    writeScript(convertScript, lines, ' to convert trained model to TFLite')
 
-        f.write('#!/bin/bash\n')
-        f.write('python tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
-
-    print("Run {} to evaluate the trained model".format(scriptFile))
-
-    scriptFile = 'convert-' + model + '-toTFLite' + scriptExt
-
-    with open(scriptFile, 'w') as f:
-        epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
-        onnxPath = 'YOLOX_outputs/{}/{}.onnx'.format(model, model)
-
-        f.write('#!/bin/bash\n')
-        f.write('python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath))
-        f.write('python tools/convertToTflite.py --modelPath {onnxPath}')
-
-    # TODO:
-    # MAKE RESUME TRAINING SCRIPT
-    # CHMOD ON ALL SCRIPTSimage.png
 
 if __name__ == '__main__':
     
