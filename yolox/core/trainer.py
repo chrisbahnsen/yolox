@@ -362,7 +362,7 @@ class Trainer:
                 }
 
                 for cls, score in clsScores.items():
-                    m['val/class/{}/AP'.format(cls.replace(' ', '_'))] = score
+                    m['val/class/{}_AP50'.format(cls.replace(' ', '_'))] = score
 
                 self.wandb_logger.log_metrics(m)
                 self.wandb_logger.log_images(predictions)

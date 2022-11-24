@@ -158,7 +158,7 @@ class VOCEvaluator:
                     "bboxes": [box.numpy().tolist() for box in bboxes],
                     "scores": [score.numpy().item() for score in scores],
                     "categories": [
-                        self.dataloader.dataset._classes[int(cls[ind])]
+                        int(cls[ind])
                         for ind in range(bboxes.shape[0])
                     ],
                 }
