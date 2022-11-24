@@ -132,7 +132,7 @@ class VOCDetection(Dataset):
         self.imgs = None
         self.cats = []
 
-        for id, name in zip(VOC_CLASSES, range(len(VOC_CLASSES))):
+        for id, name in zip(range(len(VOC_CLASSES)), VOC_CLASSES):
             entry = dict()
             entry['id'] = id
             entry['name'] = name

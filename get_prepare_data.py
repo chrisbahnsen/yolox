@@ -331,7 +331,7 @@ def getPrepareData(model, limit):
     scriptFile = 'evaluate-' + model + scriptExt
 
     with open(scriptFile, 'w') as f:
-        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
+        epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
 
         f.write('#!/bin/bash\n')
         f.write('python tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(model, epochPath, specificNanoPath))
@@ -341,14 +341,16 @@ def getPrepareData(model, limit):
     scriptFile = 'convert-' + model + '-toTFLite' + scriptExt
 
     with open(scriptFile, 'w') as f:
-        epochPath = 'YOLOX-outputs/{}/latest_ckpt.pth'.format(model)
-        onnxPath = 'YOLOX-outputs/{}/{}.onnx'.format(model, model)
+        epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
+        onnxPath = 'YOLOX_outputs/{}/{}.onnx'.format(model, model)
 
         f.write('#!/bin/bash\n')
         f.write('python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath))
         f.write('python tools/convertToTflite.py --modelPath {onnxPath}')
 
-
+    # TODO:
+    # MAKE RESUME TRAINING SCRIPT
+    # CHMOD ON ALL SCRIPTS
 
 if __name__ == '__main__':
     
