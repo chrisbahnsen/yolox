@@ -251,6 +251,43 @@ class WandbLogger(object):
             self.run.use_artifact(self.val_artifact)
             self.val_artifact.wait()
 
+    def _convert_prediction_format(self, predictions):
+        image_wise_data = defaultdict(int)
+
+        for key, val in predictions.items():
+            img_id = key
+
+            try:
+                bboxes, cls, scores = val
+            except KeyError:
+                bboxes, cls, scores = val["bboxes"], val["categories"], val["scores"]
+
+            # These store information of actual bounding boxes i.e. the ones which are not None
+            act_box = []
+            act_scores = []
+            act_cls = []
+
+            if bboxes is not None:
+                for box, classes, score in zip(bboxes, cls, scores):
+                    if box is None or score is None or classes is None:
+                        continue
+                    act_box.append(box)
+                    act_scores.append(score)
+                    act_cls.append(classes)
+
+            image_wise_data.update({
+                int(img_id): {
+                    "bboxes": [box.numpy().tolist() for box in act_box],
+                    "scores": [score.numpy().item() for score in act_scores],
+                    "categories": [
+                        self.val_dataset.class_ids[int(act_cls[ind])]
+                        for ind in range(len(act_box))
+                    ],
+                }
+            })
+
+        return 
+
     def log_metrics(self, metrics, step=None):
         """
         Args:
@@ -268,6 +305,32 @@ class WandbLogger(object):
         else:
             self.run.log(metrics)
 
+    def log_class_ap(self, clsscores, epoch):
+        m = dict()
+        classes = []
+        class_aps = []
+
+        for cls, score in clsscores.items():
+            m['val/class/{}_AP50'.format(cls.replace(' ', '_'))] = score
+            classes.append(cls)
+            class_aps.append(score)
+
+        self.log_metrics(m)
+
+        columns = ["epoch"]
+        columns.extend(classes)
+        
+        # Log AP table
+        class_ap_table = self.wandb.Table(columns = columns)
+
+        class_ap_table.add_data(
+            epoch,
+            *class_aps
+        )
+
+        self.wandb.log({"val_results/class_ap_table": class_ap_table})
+            
+
     def log_images(self, predictions):
         if len(predictions) == 0 or self.val_artifact is None or self.num_log_images == 0:
             return
@@ -278,16 +341,23 @@ class WandbLogger(object):
         for cls in self.cats:
             columns.append(cls["name"])
 
+        if isinstance(self.val_dataset, self.voc_dataset):
+            predictions = self._convert_prediction_format(predictions)
+
         result_table = self.wandb.Table(columns=columns)
+
         for idx, val in table_ref.iterrows():
 
             avg_scores = defaultdict(int)
             num_occurrences = defaultdict(int)
 
-            if val[0] in predictions:
-                prediction = predictions[val[0]]
-                boxes = []
+            id = val[0]
+            if isinstance(id, list):
+                id = id[0]
 
+            if id in predictions:
+                prediction = predictions[id]
+                boxes = []
                 for i in range(len(prediction["bboxes"])):
                     bbox = prediction["bboxes"][i]
                     x0 = bbox[0]
@@ -311,7 +381,6 @@ class WandbLogger(object):
                     boxes.append(box)
             else:
                 boxes = []
-
             average_class_score = []
             for cls in self.cats:
                 if cls["name"] not in num_occurrences:

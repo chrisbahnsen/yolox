@@ -341,6 +341,8 @@ class Trainer:
                 evalmodel, self.evaluator, self.is_distributed, return_outputs=True
             )
 
+        clsScores = None
+
         if type(ap50) == tuple:
             # We have buried additional information here
             # in order to log per-class AP
@@ -361,11 +363,12 @@ class Trainer:
                     "train/epoch": self.epoch + 1,
                 }
 
-                for cls, score in clsScores.items():
-                    m['val/class/{}_AP50'.format(cls.replace(' ', '_'))] = score
-
                 self.wandb_logger.log_metrics(m)
                 self.wandb_logger.log_images(predictions)
+
+                if clsScores:
+                    self.wandb_logger.log_class_ap(clsScores, self.epoch + 1)
+
             logger.info("\n" + summary)
         synchronize()
 
