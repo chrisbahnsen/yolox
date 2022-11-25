@@ -203,6 +203,7 @@ class WandbLogger(object):
         self.run.define_metric("train/*", step_metric="train/step")
 
         if val_dataset and self.num_log_images != 0:
+            self.val_dataset = val_dataset
             self.cats = val_dataset.cats
             self.id_to_class = {
                 cls['id']: cls['name'] for cls in self.cats
