@@ -169,6 +169,8 @@ class WandbLogger(object):
                 "Please install wandb using pip install wandb"
                 )
 
+        from yolox.data.datasets import VOCDetection
+
         self.project = project
         self.name = name
         self.id = id
@@ -201,6 +203,8 @@ class WandbLogger(object):
         self.run.define_metric("val/*", step_metric="train/epoch")
         self.run.define_metric("train/step")
         self.run.define_metric("train/*", step_metric="train/step")
+
+        self.voc_dataset = VOCDetection
 
         if val_dataset and self.num_log_images != 0:
             self.val_dataset = val_dataset
