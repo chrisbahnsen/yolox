@@ -119,6 +119,10 @@ class VOCDetection(Dataset):
         self._annopath = os.path.join("%s", "Annotations", "%s.xml")
         self._imgpath = os.path.join("%s", "JPEGImages", "%s.jpg")
         self._classes = VOC_CLASSES
+        self.cats = [
+            {"id": idx, "name": val} for idx, val in enumerate(VOC_CLASSES)
+        ]
+        self.class_ids = list(range(len(VOC_CLASSES)))
         self.ids = list()
         for (year, name) in image_sets:
             self._year = year
@@ -130,14 +134,6 @@ class VOCDetection(Dataset):
 
         self.annotations = self._load_coco_annotations()
         self.imgs = None
-        self.cats = []
-
-        for id, name in zip(range(len(VOC_CLASSES)), VOC_CLASSES):
-            entry = dict()
-            entry['id'] = id
-            entry['name'] = name
-            self.cats.append(entry)
-
         if cache:
             self._cache_images()
 

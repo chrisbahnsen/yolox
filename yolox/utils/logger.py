@@ -244,9 +244,12 @@ class WandbLogger(object):
                 data_point = val_dataset[i]
                 img = data_point[0]
                 id = data_point[3]
-                
                 img = np.transpose(img, (1, 2, 0))
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+                if isinstance(id, torch.Tensor):
+                    id = id.item()
+
                 self.val_table.add_data(
                     id,
                     self.wandb.Image(img)
@@ -291,7 +294,7 @@ class WandbLogger(object):
                 }
             })
 
-        return 
+        return image_wise_data
 
     def log_metrics(self, metrics, step=None):
         """

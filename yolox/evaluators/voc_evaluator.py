@@ -5,10 +5,9 @@
 import sys
 import tempfile
 import time
-from collections import ChainMap, defaultdict
+from collections import ChainMap
 from loguru import logger
 from tqdm import tqdm
-import itertools
 
 import numpy as np
 
@@ -19,8 +18,7 @@ from yolox.utils import (
     is_main_process,
     postprocess,
     synchronize,
-    time_synchronized,
-    xyxy2xywh
+    time_synchronized
 )
 
 class VOCEvaluator:
@@ -70,7 +68,6 @@ class VOCEvaluator:
             model = model.half()
         ids = []
         data_list = {}
-        output_data = defaultdict()
         progress_bar = tqdm if is_main_process() else iter
 
         inference_time = 0
@@ -113,11 +110,10 @@ class VOCEvaluator:
 
             data_list.update(self.convert_to_voc_format(outputs, info_imgs, ids))
 
-
         statistics = torch.cuda.FloatTensor([inference_time, nms_time, n_samples])
         if distributed:
             data_list = gather(data_list, dst=0)
-            data_list = list(itertools.chain(*data_list))
+            data_list = ChainMap(*data_list)
             torch.distributed.reduce(statistics, dst=0)
 
         eval_results = self.evaluate_prediction(data_list, statistics)
@@ -156,8 +152,8 @@ class VOCEvaluator:
         nms_time = statistics[1].item()
         n_samples = statistics[2].item()
 
-        a_infer_time = 1000 * inference_time / max(1, n_samples * self.dataloader.batch_size)
-        a_nms_time = 1000 * nms_time / max(1, n_samples * self.dataloader.batch_size)
+        a_infer_time = 1000 * inference_time / (n_samples * self.dataloader.batch_size)
+        a_nms_time = 1000 * nms_time / (n_samples * self.dataloader.batch_size)
 
         time_info = ", ".join(
             [
