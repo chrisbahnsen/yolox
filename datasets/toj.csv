@@ -52,18 +52,18 @@
 50,shirt,2174.0,,,,LVIS
 51,necklace,2167.0,,,,LVIS
 52,glove,2152.0,,,,LVIS
-53,earring,2133.0,,,,LVIS
+53,earring,2133.0,,,earrings,LVIS
 54,napkin,2088.0,,,,LVIS
 55,bracelet,1877.0,,,,LVIS
 56,Ring,1784.0,,,,LVIS
 57,dress,1664.0,,,,LVIS
 58,wet suit,1639.0,,,,LVIS
 59,boot,1578.0,,,,LVIS
-60,tank top,1227.0,,,,LVIS
-61,sandal ,1124.0,,,,LVIS
+60,tank top (clothing),1227.0,,,,LVIS
+61,sandal (type of shoe),1124.0,,,sandal,LVIS
 62,sweater,1089.0,,,,LVIS
 63,headband,978.0,,,,LVIS
-64,swimsuit,892.0,,,,LVIS
+64,swimsuit,892.0,,,swimwear,LVIS
 65,scarf,863.0,,,,LVIS
 66,coat,831.0,,,,LVIS
 67,vest,772.0,,,,LVIS

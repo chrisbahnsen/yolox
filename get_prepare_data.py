@@ -349,7 +349,7 @@ def getPrepareData(model, limit):
     resumeScript = 'resume-' + model + scriptExt  
     lines = [pythonStr + ' tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c ' + 
              epochPath + ' -a ' +
-             + model + ' -u ' + str(len(finalClassNames)) + ' --resume --logger wandb wandb-project ' + model]
+             model + ' -u ' + str(len(finalClassNames)) + ' --resume --logger wandb wandb-project ' + model]
     writeScript(resumeScript, lines, "to resume training")
 
     evaluateScript = 'evaluate-' + model + scriptExt
