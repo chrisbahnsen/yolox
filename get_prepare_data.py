@@ -34,13 +34,11 @@ def writeScript(filePath, lines, message=None):
     if message:
         print("Run {} {}".format(filePath, message))
 
-def getPrepareData(model, limit):
-
+def getModelInfoFromCsv(csvPath):
     downloadList = {'oid': []}
     fullClassInfo = dict()
 
     classRenameDict = dict()
-    csvPath = 'datasets/{}.csv'.format(model)
 
     # Open the class information file for the model 
     with open(csvPath, 'r', encoding='utf-8-sig') as f:
@@ -98,6 +96,15 @@ def getPrepareData(model, limit):
 
             fullClassInfo[className] = row
 
+    return downloadList, classRenameDict, fullClassInfo
+
+
+def getPrepareData(model, limit):
+
+    csvPath = 'datasets/{}.csv'.format(model)
+
+    downloadList, classRenameDict, fullClassInfo = getModelInfoFromCsv(csvPath)
+
     # Search for images that are already downloaded to 
     # another directory
     os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/Annotations', exist_ok=True)
@@ -138,11 +145,7 @@ def getPrepareData(model, limit):
             prunedDownloadList.append(cls)
 
 
-    classListPath = os.path.join('datasets', "{}.txt".format(model))
 
-    with open(classListPath, 'w') as f:
-        for c in prunedDownloadList:
-            f.write(c + '\n')
 
     finalClassNames = set()
 
@@ -171,6 +174,12 @@ def getPrepareData(model, limit):
         for className in finalClassNames:
             f.write('{}\n'.format(className))
 
+    # Write the list for download by OID
+    classListPath = os.path.join('datasets', "{}.txt".format(model))
+
+    with open(classListPath, 'w') as f:
+        for c in prunedDownloadList:
+            f.write(c + '\n')
 
 
     # # Now download the data
@@ -369,18 +378,18 @@ def getPrepareData(model, limit):
     writeScript(evaluateScript, lines, "to evaluate the trained model")
 
 
-    convertScript = 'convert-' + model + '-toTFLite' + scriptExt
+    convertScript = 'convert-' + model + '-to-TFLite' + scriptExt
     onnxPath = 'YOLOX_outputs/{}/{}.onnx'.format(model, model)
 
-    lines = ['python tools/export_onnx.py --output_name {} -f {} -c {}'.format(onnxPath, specificNanoPath, epochPath)]
-    lines.append('{pythonStr} tools/convertToTflite.py --modelPath {onnxPath}')
+    lines = ['python tools/export_onnx.py --output-name {} -f {} -c {}\n'.format(onnxPath, specificNanoPath, epochPath)]
+    lines.append('{} tools/convertToTflite.py --modelPath {}'.format(pythonStr, onnxPath))
     writeScript(convertScript, lines, ' to convert trained model to TFLite')
 
 
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
-    parser.add_argument('--model', type=str, default="inde", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--model', type=str, default="sporthobby", help="Name of the model. Make sure that appropriate csv file is provided")
     parser.add_argument('--limit', type=int, default="5000", help="Maximum number of images per class that are downloaded")
 
     args = parser.parse_args()
