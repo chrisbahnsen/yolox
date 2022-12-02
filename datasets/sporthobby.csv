@@ -11,33 +11,34 @@
 9,goggles,7128.0,355.0,112.0,,OID
 10,golf_ball,321.0,52.0,13.0,,OID
 11,golf_cart,336.0,28.0,7.0,,OID
-12,hiking_equipment,2571.0,159.0,46.0,hiking equipment,OID
-13,jet_ski,458.0,30.0,15.0,Jet ski,OID
-14,paddle,2244.0,348.0,126.0,,OID
-15,parachute,1047.0,204.0,73.0,,OID
-16,personal_flotation_device,1222.0,145.0,48.0,life Jacket,OID
-17,racket,240.0,84.0,23.0,,OID
-18,roller_skates,739.0,133.0,47.0,,OID
-19,rugby_ball,270.0,28.0,10.0,,OID
-20,skateboard,1103.0,140.0,48.0,,OID
-21,ski,1361.0,137.0,36.0,,OID
-22,snowboard,574.0,43.0,15.0,,OID
-23,sports_uniform,6531.0,738.0,227.0,sportswear,OID
-24,surfboard,1691.0,196.0,58.0,,OID
-25,swimwear,3365.0,522.0,164.0,,OID
-26,table_tennis_racket,589.0,97.0,29.0,table tennis racket,OID
-27,tennis_ball,385.0,45.0,11.0,,OID
-28,tennis_racket,807.0,104.0,24.0,racket,OID
-29,volleyball_(ball),579.0,100.0,18.0,,OID
-30,tennis racket,2246.0,,,racket,LVIS
-31,skateboard,2216.0,,,,LVIS
-32,ski pole,2215.0,,,,LVIS
-33,ski,2171.0,,,,LVIS
-34,surfboard,2127.0,,,,LVIS
-35,Frisbee,1995.0,,,,LVIS
-36,wet suit,1639.0,,,,LVIS
-37,tennis ball,1482.0,,,,LVIS
-38,cone,1129.0,,,,LVIS
-39,saddle,588.0,,,,LVIS
-40,apron,565.0,,,,LVIS
-41,bath towel,405.0,,,towel,LVIS
+12,helmet,7608.0,919.0,315.0,,OID
+13,hiking_equipment,2571.0,159.0,46.0,hiking equipment,OID
+14,jet_ski,458.0,30.0,15.0,Jet ski,OID
+15,paddle,2244.0,348.0,126.0,,OID
+16,parachute,1047.0,204.0,73.0,,OID
+17,personal_flotation_device,1222.0,145.0,48.0,life Jacket,OID
+18,racket,240.0,84.0,23.0,,OID
+19,roller_skates,739.0,133.0,47.0,,OID
+20,rugby_ball,270.0,28.0,10.0,,OID
+21,skateboard,1103.0,140.0,48.0,,OID
+22,ski,1361.0,137.0,36.0,,OID
+23,snowboard,574.0,43.0,15.0,,OID
+24,sports_uniform,6531.0,738.0,227.0,sportswear,OID
+25,surfboard,1691.0,196.0,58.0,,OID
+26,swimwear,3365.0,522.0,164.0,,OID
+27,table_tennis_racket,589.0,97.0,29.0,table tennis racket,OID
+28,tennis_ball,385.0,45.0,11.0,,OID
+29,tennis_racket,807.0,104.0,24.0,racket,OID
+30,volleyball_(ball),579.0,100.0,18.0,,OID
+31,tennis racket,2246.0,,,racket,LVIS
+32,skateboard,2216.0,,,,LVIS
+33,ski pole,2215.0,,,,LVIS
+34,ski,2171.0,,,,LVIS
+35,surfboard,2127.0,,,,LVIS
+36,Frisbee,1995.0,,,,LVIS
+37,wet suit,1639.0,,,,LVIS
+38,tennis ball,1482.0,,,,LVIS
+39,cone,1129.0,,,,LVIS
+40,saddle,588.0,,,,LVIS
+41,apron,565.0,,,,LVIS
+42,bath towel,405.0,,,towel,LVIS
