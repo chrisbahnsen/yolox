@@ -6,7 +6,7 @@ from shutil import move
 from os.path import basename, join
 from tqdm import tqdm
 from xmltodict import unparse, parse
-from oidv6 import OIDv6
+from OIDv6multiClassPerImage import OIDv6
 
 from oidv6_to_voc import convertFromOidv6ToVoc
 from voc_txt import convertvoc
@@ -194,7 +194,7 @@ def getPrepareData(model, limit):
     args['no_clear_shell'] = True
     args['command'] = 'downloader'
 
-    oid = OIDv6.OIDv6()
+    oid = OIDv6()
     oid.download(args)
 
     # For the categories with amount of data below limit, merge the test and validation set into the training set
