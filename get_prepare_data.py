@@ -144,6 +144,34 @@ def getPrepareData(model, limit):
         for c in prunedDownloadList:
             f.write(c + '\n')
 
+    finalClassNames = set()
+
+    for oldClassName, finalClassName in classRenameDict.items():
+        finalClassNames.add(finalClassName)
+
+    # Create the class files in COCO and VOC format
+    with open('yolox/data/datasets/voc_classes.py', 'w') as f:
+        f.write('VOC_CLASSES = (\n')
+        for className in finalClassNames:
+            f.write('    \"' + className + '\",\n')
+        
+        f.write(')')
+
+    with open('yolox/data/datasets/coco_classes.py', 'w') as f:
+        f.write('COCO_CLASSES = (\n')
+        for className in finalClassNames:
+            f.write('    \"' + className + '\",\n')
+        
+        f.write(')')
+
+    # Write the class list for consumption by NatML
+    classListPath = os.path.join('datasets', "{}-NatML.txt".format(model))
+    
+    with open(classListPath, 'w') as f:
+        for className in finalClassNames:
+            f.write('{}\n'.format(className))
+
+
 
     # # Now download the data
     args = dict()
@@ -200,11 +228,24 @@ def getPrepareData(model, limit):
                         deleteImagesWithNoAnn=False)
 
     # And make sure that files that was found elsewhere are properly renamed, too
-    convertFromOidv6ToVoc(model + '/multidata/train/labels', 
-                         'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
-                         'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
-                         classRenameDict,
-                         deleteImagesWithNoAnn=False)
+    # First, find the possible model names from the list in 'datasets'
+    models = []
+    fileList = os.listdir('datasets/')
+
+    for fl in fileList:
+        if '.csv' in fl:
+            modelName = fl.replace('.csv', '')
+
+            if os.path.exists(os.path.join(modelName, 'multidata/train/labels')):
+                models.append(modelName)
+
+    for m in models:
+        print("Converting from files copied from {}".format(m))
+        convertFromOidv6ToVoc(m + '/multidata/train/labels', 
+                            'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
+                            'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
+                            classRenameDict,
+                            deleteImagesWithNoAnn=False)
 
 
     # Copy to separate VOC folder
@@ -224,11 +265,6 @@ def getPrepareData(model, limit):
             print("---- Downloading LVIS data ------")
             getLVISbyCategories('val', downloadList['lvis'], voc2007dir, classRenameDict, limit)
             getLVISbyCategories('train', downloadList['lvis'], voc2007dir, classRenameDict, limit)
-
-    finalClassNames = set()
-
-    for oldClassName, finalClassName in classRenameDict.items():
-        finalClassNames.add(finalClassName)
 
 
     # Check if there are annotations with classes that we don't support
@@ -284,30 +320,6 @@ def getPrepareData(model, limit):
     # Make the final conversion to VOC
     print("Making the final conversion to VOC, creating trainval and test samples")
     convertvoc('datasets/' + model + '/VOCdevkit/')
-
-
-    # Create the class files in COCO and VOC format
-    with open('yolox/data/datasets/voc_classes.py', 'w') as f:
-        f.write('VOC_CLASSES = (\n')
-        for className in finalClassNames:
-            f.write('    \"' + className + '\",\n')
-        
-        f.write(')')
-
-    with open('yolox/data/datasets/coco_classes.py', 'w') as f:
-        f.write('COCO_CLASSES = (\n')
-        for className in finalClassNames:
-            f.write('    \"' + className + '\",\n')
-        
-        f.write(')')
-
-    # Write the class list for consumption by NatML
-    classListPath = os.path.join('datasets', "{}-NatML.txt".format(model))
-    
-    with open(classListPath, 'w') as f:
-        for className in finalClassNames:
-            f.write('{}\n'.format(className))
-
 
     # Create the training script
     print("Number of classes: " + str(len(finalClassNames)))
