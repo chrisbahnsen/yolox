@@ -91,6 +91,7 @@ def getModelInfoFromCsv(csvPath):
 
             if renamedClassName:
                 classRenameDict[className.replace('_', ' ')] = renamedClassName.replace('_', ' ')
+                classRenameDict[renamedClassName.replace('_', ' ')] = renamedClassName.replace('_', ' ')
             else:
                 classRenameDict[className.replace('_', ' ')] = className.replace('_', ' ')
 
@@ -196,6 +197,7 @@ def getPrepareData(model, limit):
 
     oid = OIDv6()
     oid.download(args)
+    cwd = os.getcwd()
 
     # For the categories with amount of data below limit, merge the test and validation set into the training set
     for className, i in fullClassInfo.items():
