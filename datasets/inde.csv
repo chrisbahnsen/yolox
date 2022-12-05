@@ -146,54 +146,50 @@
 144,lamp,2067.0,,,,LVIS
 145,box,1997.0,,,,LVIS
 146,doorknob,1948.0,,,,LVIS
-147,Kite,1920.0,,,,LVIS
-148,sink,1869.0,,,,LVIS
-149,suitcase,1831.0,,,,LVIS
-150,cup,1698.0,,,,LVIS
-151,refrigerator,1655.0,,,,LVIS
-152,plastic bag,1640.0,,,,LVIS
-153,spoon,1287.0,,,,LVIS
-154,remote control,1273.0,,,,LVIS
-155,candle,1257.0,,,,LVIS
-156,stove,1170.0,,,,LVIS
-157,toilet tissue,1164.0,,,toilet paper,LVIS
-158,speaker (stero equipment),1130.0,,,speaker,LVIS
-159,microwave oven,1097.0,,,,LVIS
-160,tray,1033.0,,,,LVIS
-161,lightbulb,991.0,,,,LVIS
-162,mug,933.0,,,cup,LVIS
-163,bathtub,929.0,,,,LVIS
-164,toothbrush,831.0,,,,LVIS
-165,scissors,804.0,,,,LVIS
-166,bucket,801.0,,,,LVIS
-167,oven,776.0,,,,LVIS
-168,chopping board,732.0,,,,LVIS
-169,towel,719.0,,,,LVIS
-170,ladder,710.0,,,,LVIS
-171,fan,674.0,,,,LVIS
-172,fireplace,603.0,,,,LVIS
-173,soap,598.0,,,,LVIS
-174,bow (decorative ribbons),561.0,,,bow,LVIS
-175,pot,546.0,,,,LVIS
-176,can,502.0,,,canister,LVIS
-177,newspaper,480.0,,,,LVIS
-178,shower head,432.0,,,shower,LVIS
-179,shower curtain,424.0,,,curtain,LVIS
-180,saltshaker,418.0,,,salt shaker,LVIS
-181,bath towel,405.0,,,towel,LVIS
-182,pen,382.0,,,,LVIS
-183,spatula,353.0,,,,LVIS
-184,stool,344.0,,,,LVIS
-185,microphone,315.0,,,,LVIS
-186,pitcher (vessel for liquid),309.0,,,pitcher,LVIS
-187,blender,283.0,,,,LVIS
-188,crate,279.0,,,box,LVIS
-189,saucer,278.0,,,,LVIS
-190,pan (for cooking),276.0,,,frying pan,LVIS
-191,coffee maker,264.0,,,,LVIS
-192,hand towel,229.0,,,towel,LVIS
-193,guitar,221.0,,,,LVIS
-194,teapot,151.0,,,,LVIS
-195,frying pan,141.0,,,,LVIS
-196,wheelchair,90.0,,,,LVIS
-197,sword,61.0,,,,LVIS
+147,sink,1869.0,,,,LVIS
+148,suitcase,1831.0,,,,LVIS
+149,cup,1698.0,,,,LVIS
+150,refrigerator,1655.0,,,,LVIS
+151,plastic bag,1640.0,,,,LVIS
+152,spoon,1287.0,,,,LVIS
+153,remote control,1273.0,,,,LVIS
+154,candle,1257.0,,,,LVIS
+155,stove,1170.0,,,,LVIS
+156,toilet tissue,1164.0,,,toilet paper,LVIS
+157,microwave oven,1097.0,,,microwave,LVIS
+158,tray,1033.0,,,,LVIS
+159,lightbulb,991.0,,,,LVIS
+160,mug,933.0,,,cup,LVIS
+161,bathtub,929.0,,,,LVIS
+162,toothbrush,831.0,,,,LVIS
+163,scissors,804.0,,,,LVIS
+164,bucket,801.0,,,,LVIS
+165,oven,776.0,,,,LVIS
+166,chopping board,732.0,,,cutting board,LVIS
+167,towel,719.0,,,,LVIS
+168,ladder,710.0,,,,LVIS
+169,fan,674.0,,,,LVIS
+170,fireplace,603.0,,,,LVIS
+171,soap,598.0,,,,LVIS
+172,bow (decorative ribbons),561.0,,,bow,LVIS
+173,pot,546.0,,,,LVIS
+174,can,502.0,,,canister,LVIS
+175,shower head,432.0,,,shower,LVIS
+176,shower curtain,424.0,,,curtain,LVIS
+177,saltshaker,418.0,,,salt shaker,LVIS
+178,bath towel,405.0,,,towel,LVIS
+179,pen,382.0,,,,LVIS
+180,stool,344.0,,,chair,LVIS
+181,microphone,315.0,,,,LVIS
+182,pitcher (vessel for liquid),309.0,,,pitcher,LVIS
+183,blender,283.0,,,,LVIS
+184,crate,279.0,,,box,LVIS
+185,saucer,278.0,,,,LVIS
+186,pan (for cooking),276.0,,,frying pan,LVIS
+187,coffee maker,264.0,,,,LVIS
+188,christmas tree,247.0,,,,LVIS
+189,hand towel,229.0,,,towel,LVIS
+190,guitar,221.0,,,,LVIS
+191,teapot,151.0,,,,LVIS
+192,frying pan,141.0,,,,LVIS
+193,wheelchair,90.0,,,,LVIS
