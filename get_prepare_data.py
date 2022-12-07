@@ -412,5 +412,5 @@ if __name__ == '__main__':
         raise ValueError("get_prepare_data: yoloxModel must be one of %r." % validYoloxModels)
 
 
-    getPrepareData(args.model, args.limit, args.yoloxmodel, args.noDownload)
+    getPrepareData(args.model, args.limit, args.yoloxmodel, args.no_download)
 
