@@ -100,50 +100,52 @@ def getModelInfoFromCsv(csvPath):
     return downloadList, classRenameDict, fullClassInfo
 
 
-def getPrepareData(model, limit):
+def getPrepareData(model, limit, yoloxmodel, noDownload):
 
     csvPath = 'datasets/{}.csv'.format(model)
 
     downloadList, classRenameDict, fullClassInfo = getModelInfoFromCsv(csvPath)
 
-    # Search for images that are already downloaded to 
-    # another directory
-    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/Annotations', exist_ok=True)
-    os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages', exist_ok=True)
+    if not noDownload:
 
-    prunedDownloadList = []
+        # Search for images that are already downloaded to 
+        # another directory
+        os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/Annotations', exist_ok=True)
+        os.makedirs('datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages', exist_ok=True)
 
-    for cls in downloadList['oid']:
-        clsName = cls.replace(' ', '_')
-        matches = []
+        prunedDownloadList = []
 
-        for path in Path('datasets').rglob(clsName + "*"):
-            matches.append(str(path))
+        for cls in downloadList['oid']:
+            clsName = cls.replace(' ', '_')
+            matches = []
 
-        # We find both jpg and xml files, which count as one
-        numMatches = int(len(matches) / 2)
+            for path in Path('datasets').rglob(clsName + "*"):
+                matches.append(str(path))
 
-        # There might be errors in the numbers reported in the spreadsheet, 
-        # so in order to avoid too many re-downloads, we relax this criteria
-        trainImgs = int(float(fullClassInfo[cls]['train'])* 0.4)
+            # We find both jpg and xml files, which count as one
+            numMatches = int(len(matches) / 2)
 
-        if numMatches >= trainImgs or numMatches >= limit:
-            # No need to re-download this class, plenty of existing data
-            # already
-            print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
+            # There might be errors in the numbers reported in the spreadsheet, 
+            # so in order to avoid too many re-downloads, we relax this criteria
+            trainImgs = int(float(fullClassInfo[cls]['train'])* 0.4)
 
-            # Now move this data
-            for m in tqdm(matches, 'Copying images to {}'.format(join('datasets', model, 'VOCdevkit'))):
-                # We only move the 2007 data as we will copy the 2012 data later
-                if ('2007' in m or '2012' in m) and model not in m:
-                    if 'xml' in m:
-                        d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'Annotations', basename(m))
-                    else: 
-                        d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'JPEGImages', basename(m))
+            if numMatches >= trainImgs or numMatches >= limit:
+                # No need to re-download this class, plenty of existing data
+                # already
+                print("Found {} images of class {}, no need to re-download".format(numMatches, cls))
 
-                    move(m, d)
-        else:
-            prunedDownloadList.append(cls)
+                # Now move this data
+                for m in tqdm(matches, 'Copying images to {}'.format(join('datasets', model, 'VOCdevkit'))):
+                    # We only move the 2007 data as we will copy the 2012 data later
+                    if ('2007' in m or '2012' in m) and model not in m:
+                        if 'xml' in m:
+                            d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'Annotations', basename(m))
+                        else: 
+                            d = join('datasets', model, 'VOCdevkit', 'VOC2007', 'JPEGImages', basename(m))
+
+                        move(m, d)
+            else:
+                prunedDownloadList.append(cls)
 
 
 
@@ -175,170 +177,171 @@ def getPrepareData(model, limit):
         for className in finalClassNames:
             f.write('{}\n'.format(className))
 
-    # Write the list for download by OID
-    classListPath = os.path.join('datasets', "{}.txt".format(model))
+    if not noDownload:
+        # Write the list for download by OID
+        classListPath = os.path.join('datasets', "{}.txt".format(model))
 
-    with open(classListPath, 'w') as f:
-        for c in prunedDownloadList:
-            f.write(c + '\n')
+        with open(classListPath, 'w') as f:
+            for c in prunedDownloadList:
+                f.write(c + '\n')
 
 
-    # # Now download the data
-    args = dict()
-    args['type_data'] = 'all'
-    args['classes'] = [classListPath]
-    args['limit'] = limit
-    args['multi_classes'] = True
-    args['dataset'] = model
-    args['yes'] = True
-    args['no_labels'] = False
-    args['no_clear_shell'] = True
-    args['command'] = 'downloader'
+        # # Now download the data
+        args = dict()
+        args['type_data'] = 'all'
+        args['classes'] = [classListPath]
+        args['limit'] = limit
+        args['multi_classes'] = True
+        args['dataset'] = model
+        args['yes'] = True
+        args['no_labels'] = False
+        args['no_clear_shell'] = True
+        args['command'] = 'downloader'
 
-    oid = OIDv6()
-    oid.download(args)
-    cwd = os.getcwd()
+        oid = OIDv6()
+        oid.download(args)
+        cwd = os.getcwd()
 
-    # For the categories with amount of data below limit, merge the test and validation set into the training set
-    for className, i in fullClassInfo.items():
-        try:
-            trainImgs = int(float(i['train']))
+        # For the categories with amount of data below limit, merge the test and validation set into the training set
+        for className, i in fullClassInfo.items():
+            try:
+                trainImgs = int(float(i['train']))
 
-            if trainImgs < limit:
-                print('Combining train, test and validation imags for class: ' + i['class_name'])
-                # Now move data from test to train
-                
-                if os.name == 'nt':
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
+                if trainImgs < limit:
+                    print('Combining train, test and validation imags for class: ' + i['class_name'])
+                    # Now move data from test to train
+                    
+                    if os.name == 'nt':
+                        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
+                        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\test\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
 
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
-                    os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
-                else:
-                    # First images
-                    os.system('find ' + model + '/multidata/test/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
-                    # Then labels
-                    os.system('find ' + model + '/multidata/test/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
-                            #'find \'OIDv6/multidata/test/ -name ' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' OIDv6/multidata/train/ \;' 
+                        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\*.jpg -Destination ' + cwd + '\\' + model + '\\multidata\\train\\ -Force')
+                        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\validation\\labels\\*.txt -Destination ' + cwd + '\\' + model + '\\multidata\\train\\labels\\ -Force')
+                    else:
+                        # First images
+                        os.system('find ' + model + '/multidata/test/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
+                        # Then labels
+                        os.system('find ' + model + '/multidata/test/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
+                                #'find \'OIDv6/multidata/test/ -name ' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' OIDv6/multidata/train/ \;' 
 
-                    # And from val to train
-                    os.system('find ' + model + '/multidata/validation/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
-                    os.system('find ' + model + '/multidata/validation/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
-        except Exception as e:
-            print(e)
+                        # And from val to train
+                        os.system('find ' + model + '/multidata/validation/ -name \'' + i['class_name'] + '_*.jpg\' -exec mv \'{}\' ' + model + '/multidata/train/ \;')
+                        os.system('find ' + model + '/multidata/validation/labels -name \'' + i['class_name'] + '_*.txt\' -exec mv \'{}\' ' + model + '/multidata/train/labels/ \;')
+            except Exception as e:
+                print(e)
 
-    # Combine the newly acquired data
+        # Combine the newly acquired data
 
-    # Call the OIDV6 script from here
-    oidTrainPath = os.path.join(model + '/multidata/train')
+        # Call the OIDV6 script from here
+        oidTrainPath = os.path.join(model + '/multidata/train')
 
-    convertFromOidv6ToVoc(os.path.join(oidTrainPath, 'labels'), 
-                        oidTrainPath,
-                        oidTrainPath,
-                        classRenameDict, 
-                        deleteImagesWithNoAnn=False)
-
-    # And make sure that files that was found elsewhere are properly renamed, too
-    # First, find the possible model names from the list in 'datasets'
-    models = []
-    fileList = os.listdir('datasets/')
-
-    for fl in fileList:
-        if '.csv' in fl:
-            modelName = fl.replace('.csv', '')
-
-            if os.path.exists(os.path.join(modelName, 'multidata/train/labels')):
-                models.append(modelName)
-
-    for m in models:
-        print("Converting from files copied from {}".format(m))
-        convertFromOidv6ToVoc(m + '/multidata/train/labels', 
-                            'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
-                            'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
-                            classRenameDict,
+        convertFromOidv6ToVoc(os.path.join(oidTrainPath, 'labels'), 
+                            oidTrainPath,
+                            oidTrainPath,
+                            classRenameDict, 
                             deleteImagesWithNoAnn=False)
 
+        # And make sure that files that was found elsewhere are properly renamed, too
+        # First, find the possible model names from the list in 'datasets'
+        models = []
+        fileList = os.listdir('datasets/')
 
-    # Copy to separate VOC folder
-    print("Moving data, hold tight...")
-    if os.name == 'nt':
-        cwd = os.getcwd()
-        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\JPEGImages\\ -Force')
-        os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\Annotations\\ -Force')
-    else:
-        os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages')
-        os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/Annotations')
+        for fl in fileList:
+            if '.csv' in fl:
+                modelName = fl.replace('.csv', '')
 
-    voc2007dir = 'datasets/' + model + '/VOCdevkit/VOC2007/'
-    # Download LVIS categories, if any
-    if 'lvis' in downloadList:
-        if len(downloadList['lvis']) > 0:
-            print("---- Downloading LVIS data ------")
-            getLVISbyCategories('val', downloadList['lvis'], voc2007dir, classRenameDict, limit)
-            getLVISbyCategories('train', downloadList['lvis'], voc2007dir, classRenameDict, limit)
+                if os.path.exists(os.path.join(modelName, 'multidata/train/labels')):
+                    models.append(modelName)
+
+        for m in models:
+            print("Converting from files copied from {}".format(m))
+            convertFromOidv6ToVoc(m + '/multidata/train/labels', 
+                                'datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages',
+                                'datasets/' + model + '/VOCdevkit/VOC2007/Annotations',
+                                classRenameDict,
+                                deleteImagesWithNoAnn=False)
 
 
-    # Check if there are annotations with classes that we don't support
-    annPath = os.path.join(voc2007dir, 'Annotations')
-    allAnns = os.listdir(annPath)
+        # Copy to separate VOC folder
+        print("Moving data, hold tight...")
+        if os.name == 'nt':
+            cwd = os.getcwd()
+            os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.jpg -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\JPEGImages\\ -Force')
+            os.system('powershell Move-Item -Path ' + cwd + '\\' +  model + '\\multidata\\train\\*.xml -Destination ' + cwd + '\\datasets\\' + model + '\\VOCdevkit\\VOC2007\\Annotations\\ -Force')
+        else:
+            os.system('find ' + model + '/multidata/train/ -type f -name \'*.jpg\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/JPEGImages')
+            os.system('find ' + model + '/multidata/train/ -type f -name \'*.xml\' -print0 | xargs -0 mv -t datasets/' + model + '/VOCdevkit/VOC2007/Annotations')
 
-    for a in tqdm(allAnns, "Checking annotations"):
+        voc2007dir = 'datasets/' + model + '/VOCdevkit/VOC2007/'
+        # Download LVIS categories, if any
+        if 'lvis' in downloadList:
+            if len(downloadList['lvis']) > 0:
+                print("---- Downloading LVIS data ------")
+                getLVISbyCategories('val', downloadList['lvis'], voc2007dir, classRenameDict, limit)
+                getLVISbyCategories('train', downloadList['lvis'], voc2007dir, classRenameDict, limit)
 
-        deleteAnn = False
-        renameAnn = False
-        ann = []
-        
-        with open(os.path.join(annPath, a), 'r') as f:
-            ann = parse(f.read())
 
-            if type(ann['annotation']['object']) == dict:
-                name = ann['annotation']['object']['name'] 
-                if name not in finalClassNames:
-                    # Try to check if we can rename 
-                    # this object
-                    if name in classRenameDict:
-                        ann['annotation']['object']['name'] = classRenameDict[name]
-                        renameAnn = True
-                    else:
-                        deleteAnn = True
-            else:
-                # List of dicts
-                for object in ann['annotation']['object']:
-                    if object['name'] not in finalClassNames:
+        # Check if there are annotations with classes that we don't support
+        annPath = os.path.join(voc2007dir, 'Annotations')
+        allAnns = os.listdir(annPath)
+
+        for a in tqdm(allAnns, "Checking annotations"):
+
+            deleteAnn = False
+            renameAnn = False
+            ann = []
+            
+            with open(os.path.join(annPath, a), 'r') as f:
+                ann = parse(f.read())
+
+                if type(ann['annotation']['object']) == dict:
+                    name = ann['annotation']['object']['name'] 
+                    if name not in finalClassNames:
                         # Try to check if we can rename 
                         # this object
-                        if object['name'] in classRenameDict:
-                            object['name'] = classRenameDict[object['name']]
+                        if name in classRenameDict:
+                            ann['annotation']['object']['name'] = classRenameDict[name]
                             renameAnn = True
                         else:
                             deleteAnn = True
+                else:
+                    # List of dicts
+                    for object in ann['annotation']['object']:
+                        if object['name'] not in finalClassNames:
+                            # Try to check if we can rename 
+                            # this object
+                            if object['name'] in classRenameDict:
+                                object['name'] = classRenameDict[object['name']]
+                                renameAnn = True
+                            else:
+                                deleteAnn = True
 
-        if deleteAnn:
-            print("Deleting, not in class list: {}".format(a))
-            try:
-                os.remove(os.path.join(annPath, a))
-                os.remove(os.path.join(voc2007dir, 'JPEGImages', a.replace('.xml', '.jpg')))
-            except OSError:
-                pass
-                    
-        if renameAnn:
-            # Save the renamed annotation
-            with open(os.path.join(annPath, a), 'w') as f:
-                unparse(ann, f, full_document=False, pretty=True)         
+            if deleteAnn:
+                print("Deleting, not in class list: {}".format(a))
+                try:
+                    os.remove(os.path.join(annPath, a))
+                    os.remove(os.path.join(voc2007dir, 'JPEGImages', a.replace('.xml', '.jpg')))
+                except OSError:
+                    pass
+                        
+            if renameAnn:
+                # Save the renamed annotation
+                with open(os.path.join(annPath, a), 'w') as f:
+                    unparse(ann, f, full_document=False, pretty=True)         
 
 
 
-    # Make the final conversion to VOC
-    print("Making the final conversion to VOC, creating trainval and test samples")
-    convertvoc('datasets/' + model + '/VOCdevkit/')
+        # Make the final conversion to VOC
+        print("Making the final conversion to VOC, creating trainval and test samples")
+        convertvoc('datasets/' + model + '/VOCdevkit/')
 
     # Create the training script
     print("Number of classes: " + str(len(finalClassNames)))
-    specificNano = []
-    specificNanoPath = 'exps/example/yolox_voc/{}.py'.format(model)
+    specificYolox = []
+    specificYoloxPath = 'exps/example/yolox_voc/{}.py'.format(model)
 
     # Copy the nano_custom file, change number of classes
-    with open('exps/example/yolox_voc/yolox_voc_nano_custom.py') as f:
+    with open('exps/example/yolox_voc/yolox_voc_{}_custom.py'.format(yoloxmodel)) as f:
         nano = f.readlines()
 
         firstEncounter = True
@@ -347,12 +350,12 @@ def getPrepareData(model, limit):
             if firstEncounter and 'self.num_classes' in line:
                 firstEncounter = False
                 mod = '        self.num_classes = {}'.format(len(finalClassNames))
-                specificNano.append(mod)
+                specificYolox.append(mod)
             else:
-                specificNano.append(line)
+                specificYolox.append(line)
 
-    with open(specificNanoPath, 'w') as f:
-        f.writelines(specificNano)
+    with open(specificYoloxPath, 'w') as f:
+        f.writelines(specificYolox)
 
     if os.name == 'nt':
         scriptExt =  '.bat'
@@ -364,26 +367,31 @@ def getPrepareData(model, limit):
     trainScript = 'train-' + model + scriptExt  
     epochPath = 'YOLOX_outputs/{}/latest_ckpt.pth'.format(model)
 
+    wandbProjectName = model
+    
+    if 'tiny' in yoloxmodel:
+        wandbProjectName += '-tiny'
 
-    lines = [pythonStr + ' tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
-                + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + model]
+
+    lines = [pythonStr + ' tools/train.py -f ' + specificYoloxPath + ' -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
+                + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + wandbProjectName]
     writeScript(trainScript, lines, "to start training")
 
     resumeScript = 'resume-' + model + scriptExt  
-    lines = [pythonStr + ' tools/train.py -f exps/example/yolox_voc/yolox_voc_nano_custom.py -d 1 -b 16 --fp16 -c ' + 
+    lines = [pythonStr + ' tools/train.py -f ' + specificYoloxPath + ' -d 1 -b 16 --fp16 -c ' + 
              epochPath + ' -a ' +
-             model + ' -u ' + str(len(finalClassNames)) + ' --resume --logger wandb wandb-project ' + model]
+             model + ' -u ' + str(len(finalClassNames)) + ' --resume --logger wandb wandb-project ' + wandbProjectName]
     writeScript(resumeScript, lines, "to resume training")
 
     evaluateScript = 'evaluate-' + model + scriptExt
-    lines = ['{} tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(pythonStr, model, epochPath, specificNanoPath)]
+    lines = ['{} tools/eval.py -n {} -c {} -b 4 -d 1 --conf 0.01 -f {}'.format(pythonStr, model, epochPath, specificYoloxPath)]
     writeScript(evaluateScript, lines, "to evaluate the trained model")
 
 
     convertScript = 'convert-' + model + '-to-TFLite' + scriptExt
     onnxPath = 'YOLOX_outputs/{}/{}.onnx'.format(model, model)
 
-    lines = ['python tools/export_onnx.py --output-name {} -f {} -c {}\n'.format(onnxPath, specificNanoPath, epochPath)]
+    lines = ['python tools/export_onnx.py --output-name {} -f {} -c {}\n'.format(onnxPath, specificYoloxPath, epochPath)]
     lines.append('{} tools/convertToTflite.py --modelPath {}'.format(pythonStr, onnxPath))
     writeScript(convertScript, lines, ' to convert trained model to TFLite')
 
@@ -393,8 +401,16 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
     parser.add_argument('--model', type=str, default="sporthobby", help="Name of the model. Make sure that appropriate csv file is provided")
     parser.add_argument('--limit', type=int, default="5000", help="Maximum number of images per class that are downloaded")
+    parser.add_argument('--yoloxmodel', type=str, default='nano', help='Name of the YOLOX model to train. Currently, only nano and tiny are supported')
+    parser.add_argument('--no_download', help='Do not download data, only prepare existing.', action='store_true')
 
     args = parser.parse_args()
 
-    getPrepareData(args.model, args.limit)
+    validYoloxModels = {'nano', 'tiny'}
+
+    if args.yoloxmodel) not in validYoloxModels:
+        raise ValueError("get_prepare_data: yoloxModel must be one of %r." % validYoloxModels)
+
+
+    getPrepareData(args.model, args.limit, args.yoloxmodel, args.noDownload)
 
