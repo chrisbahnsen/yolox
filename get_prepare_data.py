@@ -25,7 +25,7 @@ def writeScript(filePath, lines, message=None):
         if os.name == 'nt':
             # Don't automatically close the terminal when 
             # the script stops
-            f.write('pause\n')
+            f.write('\npause\n')
 
     if not os.name == 'nt':
         # Make the script runnable

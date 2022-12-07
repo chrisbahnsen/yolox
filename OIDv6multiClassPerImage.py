@@ -23,7 +23,6 @@ from pathlib import Path  # Работа с путями в файловой с�
 from oidv6.modules.core import core  # Ядро
 from oidv6.modules.trml.shell import Shell  # Работа с Shell
 
-
 # ######################################################################################################################
 # Сообщения
 # ######################################################################################################################
@@ -633,8 +632,9 @@ class OIDv6(Messages):
             # Создание директории
             if not os.path.exists(labels_path):
                 os.makedirs(labels_path)
-                
 
+            groups = self._type_data[curr_type_multi]['df'].groupby(self._type_data[curr_type_multi]['df'].ImageID)
+            
             # Проход по всем изображениям
             for i, img in enumerate(self._labels_list):
                 curr_image = cv2.imread(img)  # Загрузка изображения
@@ -657,12 +657,14 @@ class OIDv6(Messages):
                     continue
 
                 # Get all boxes for the image ID in question (e.g. basename_multi)
-                groups = self._type_data[curr_type_multi]['df'][
-                    (self._type_data[curr_type_multi]['df'].ImageID == basename_multi)]
+                # groups = self._type_data[curr_type_multi]['df'][
+                #     (self._type_data[curr_type_multi]['df'].ImageID == basename_multi)]
 
-                boxes = groups[[
+
+                boxes = groups.get_group(basename_multi)[[
                     'LabelName', 'XMin', 'XMax', 'YMin', 'YMax'
                 ]].values.tolist()
+
 
                 # Путь к текстовому файлу, куда будут сохранены координаты
                 file_path = os.path.join(labels_path, basename + '.txt')
