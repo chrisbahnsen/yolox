@@ -408,7 +408,7 @@ if __name__ == '__main__':
 
     validYoloxModels = {'nano', 'tiny'}
 
-    if args.yoloxmodel) not in validYoloxModels:
+    if args.yoloxmodel not in validYoloxModels:
         raise ValueError("get_prepare_data: yoloxModel must be one of %r." % validYoloxModels)
 
 
