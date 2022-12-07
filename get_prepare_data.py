@@ -373,7 +373,7 @@ def getPrepareData(model, limit, yoloxmodel, noDownload):
         wandbProjectName += '-tiny'
 
 
-    lines = [pythonStr + ' tools/train.py -f ' + specificYoloxPath + ' -d 1 -b 16 --fp16 -c yolox_nano.pth -a ' 
+    lines = [pythonStr + ' tools/train.py -f ' + specificYoloxPath + ' -d 1 -b 16 --fp16 -c yolox_{}.pth -a '.format(yoloxmodel) 
                 + model + ' -u ' + str(len(finalClassNames)) + ' --logger wandb wandb-project ' + wandbProjectName]
     writeScript(trainScript, lines, "to start training")
 
