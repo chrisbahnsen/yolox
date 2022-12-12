@@ -173,9 +173,14 @@ def getPrepareData(model, limit, yoloxmodel, noDownload):
     # Write the class list for consumption by NatML
     classListPath = os.path.join('datasets', "{}-NatML.txt".format(model))
     
-    with open(classListPath, 'w') as f:
-        for className in finalClassNames:
-            f.write('{}\n'.format(className))
+    with open(classListPath, 'w', newline='') as f:
+
+        for idx, className in enumerate(finalClassNames):
+            if idx == 0:
+                f.write("{}".format(className))
+            else:
+                f.write("\n{}".format(className))
+        
 
     if not noDownload:
         # Write the list for download by OID
@@ -405,6 +410,7 @@ if __name__ == '__main__':
     parser.add_argument('--no_download', help='Do not download data, only prepare existing.', action='store_true')
 
     args = parser.parse_args()
+    args.no_download = True
 
     validYoloxModels = {'nano', 'tiny'}
 
