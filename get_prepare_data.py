@@ -410,7 +410,6 @@ if __name__ == '__main__':
     parser.add_argument('--no_download', help='Do not download data, only prepare existing.', action='store_true')
 
     args = parser.parse_args()
-    args.no_download = True
 
     validYoloxModels = {'nano', 'tiny'}
 

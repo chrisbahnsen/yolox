@@ -743,6 +743,9 @@ class OIDv6(Messages):
                 class_name_del = class_name.replace('_', ' ')  
 
                 if self._df_classes is None:
+                    if self._valid_csv(url_class_descriptions, path_class_descriptions, args['yes'], out) != 200:
+                        return False
+
                     self._df_classes = pd.read_csv(
                         os.path.join(metadata_dir, self._name_file_classes), header = None
                     )
