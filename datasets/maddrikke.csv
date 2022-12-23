@@ -22,7 +22,7 @@
 20,dessert,8466.0,2035.0,642.0,,OID
 21,doughnut,400.0,112.0,45.0,,OID
 22,drink,16071.0,1081.0,356.0,,OID
-23,egg_(food),934.0,237.0,72.0,egg,OID
+23,egg_(food),934.0,237.0,72.0,,OID
 24,flute,243.0,27.0,10.0,bread,OID
 25,french_fries,1121.0,216.0,70.0,french fries,OID
 26,french_horn,336.0,128.0,39.0,french horn,OID
@@ -62,34 +62,35 @@
 60,tomato,1283.0,300.0,89.0,,OID
 61,watermelon,409.0,85.0,27.0,,OID
 62,wine,4878.0,258.0,93.0,,OID
-63,pizza,2163.0,,,,LVIS
-64,banana,1997.0,,,,LVIS
-65,bread,1709.0,,,,LVIS
-66,broccoli,1520.0,,,,LVIS
-67,Tomato,1383.0,,,,LVIS
-68,carrot,1382.0,,,,LVIS
-69,apple,1339.0,,,,LVIS
-70,doughnut,1102.0,,,,LVIS
-71,orange (fruit),921.0,,,orange,LVIS
-72,cake,918.0,,,,LVIS
-73,lettuce,770.0,,,salad,LVIS
-74,onion,739.0,,,,LVIS
-75,bun,696.0,,,,LVIS
-76,lemon,393.0,,,,LVIS
-77,strawberry,379.0,,,,LVIS
-78,bell pepper,359.0,,,,LVIS
-79,potato,348.0,,,,LVIS
-80,cucumber,274.0,,,,LVIS
-81,grape,262.0,,,,LVIS
-82,egg,226.0,,,,LVIS
-83,pineapple,209.0,,,,LVIS
-84,cookie,181.0,,,,LVIS
-85,pear,128.0,,,,LVIS
-86,watermelon,125.0,,,,LVIS
-87,sweet potato,26.0,,,potato,LVIS
-88,coconut,29.0,,,,LVIS
-89,artichoke ,34.0,,,,LVIS
-90,canister,59.0,,,,LVIS
-91,Pancake ,74.0,,,,LVIS
-92,burrito,12.0,,,,LVIS
-93,asparagus,80.0,,,,LVIS
+63,winter_melon,37.0,14.0,9.0,melon,OID
+64,pizza,2163.0,,,,LVIS
+65,banana,1997.0,,,,LVIS
+66,bread,1709.0,,,,LVIS
+67,broccoli,1520.0,,,,LVIS
+68,Tomato,1383.0,,,,LVIS
+69,carrot,1382.0,,,,LVIS
+70,apple,1339.0,,,,LVIS
+71,doughnut,1102.0,,,,LVIS
+72,orange (fruit),921.0,,,orange,LVIS
+73,cake,918.0,,,,LVIS
+74,lettuce,770.0,,,salad,LVIS
+75,onion,739.0,,,,LVIS
+76,bun,696.0,,,,LVIS
+77,lemon,393.0,,,,LVIS
+78,strawberry,379.0,,,,LVIS
+79,bell pepper,359.0,,,,LVIS
+80,potato,348.0,,,,LVIS
+81,cucumber,274.0,,,,LVIS
+82,grape,262.0,,,,LVIS
+83,egg,226.0,,,,LVIS
+84,pineapple,209.0,,,,LVIS
+85,cookie,181.0,,,,LVIS
+86,pear,128.0,,,,LVIS
+87,watermelon,125.0,,,,LVIS
+88,sweet potato,26.0,,,potato,LVIS
+89,coconut,29.0,,,,LVIS
+90,artichoke ,34.0,,,,LVIS
+91,canister,59.0,,,,LVIS
+92,Pancake ,74.0,,,,LVIS
+93,burrito,12.0,,,,LVIS
+94,asparagus,80.0,,,,LVIS

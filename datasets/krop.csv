@@ -15,16 +15,25 @@
 13,skull,1501.0,100.0,27.0,,OID
 14,hair,,,,,PASCAL-parts
 15,head,,,,,PASCAL-parts
-16,ear,,,,,PASCAL-parts
-17,eye,,,,,PASCAL-parts
-18,eyebrow,,,,,PASCAL-parts
-19,foot,,,,,PASCAL-parts
-20,hand,,,,,PASCAL-parts
-21,lower arm,,,,arm,PASCAL-parts
-22,lower leg,,,,leg,PASCAL-parts
-23,upper arm,,,,arm,PASCAL-parts
-24,upper leg,,,,leg,PASCAL-parts
-25,mouth,,,,,PASCAL-parts
-26,neck,,,,,PASCAL-parts
-27,nose,,,,,PASCAL-parts
-28,torso,,,,body,PASCAL-parts
+16,lear,,,,ear,PASCAL-parts
+17,rear,,,,ear,PASCAL-parts
+18,reye,,,,eye,PASCAL-parts
+19,leye,,,,eye,PASCAL-parts
+20,rebrow,,,,eyebrow,PASCAL-parts
+21,lebrow,,,,eyebrow,PASCAL-parts
+22,rfoot,,,,foot,PASCAL-parts
+23,lfoot,,,,foot,PASCAL-parts
+24,rhand,,,,hand,PASCAL-parts
+25,lhand,,,,hand,PASCAL-parts
+26,llarm,,,,arm,PASCAL-parts
+27,rlarm,,,,arm,PASCAL-parts
+28,ruleg,,,,leg,PASCAL-parts
+29,luleg,,,,leg,PASCAL-parts
+30,rlleg,,,,leg,PASCAL-parts
+31,llleg,,,,leg,PASCAL-parts
+32,luarm,,,,arm,PASCAL-parts
+33,ruarm,,,,arm,PASCAL-parts
+34,mouth,,,,,PASCAL-parts
+35,neck,,,,,PASCAL-parts
+36,nose,,,,,PASCAL-parts
+37,torso,,,,body,PASCAL-parts

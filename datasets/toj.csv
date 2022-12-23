@@ -23,7 +23,7 @@
 21,luggage_and_bags,953.0,121.0,37.0,bag,OID
 22,miniskirt,746.0,98.0,32.0,,OID
 23,necklace,2200.0,160.0,56.0,,OID
-24,personal_flotation_device,1222.0,145.0,48.0,life Jacket,OID
+24,personal_flotation_device,1222.0,145.0,48.0,life jacket,OID
 25,roller_skates,739.0,133.0,47.0,,OID
 26,sandal,1298.0,247.0,110.0,,OID
 27,scarf,2003.0,83.0,26.0,,OID
@@ -41,33 +41,34 @@
 39,tie,7733.0,320.0,97.0,,OID
 40,trousers,4858.0,655.0,213.0,,OID
 41,umbrella,3357.0,106.0,27.0,,OID
-42,watch,1434.0,90.0,29.0,,OID
-43,sock,2231.0,,,,LVIS
-44,belt,2203.0,,,,LVIS
-45,umbrella,2203.0,,,,LVIS
-46,watch,2193.0,,,,LVIS
-47,backpack,2182.0,,,,LVIS
-48,shoe,2182.0,,,,LVIS
-49,jersey,2178.0,,,,LVIS
-50,shirt,2174.0,,,,LVIS
-51,necklace,2167.0,,,,LVIS
-52,glove,2152.0,,,,LVIS
-53,earring,2133.0,,,earrings,LVIS
-54,napkin,2088.0,,,,LVIS
-55,bracelet,1877.0,,,,LVIS
-56,Ring,1784.0,,,,LVIS
-57,dress,1664.0,,,,LVIS
-58,wet suit,1639.0,,,,LVIS
-59,boot,1578.0,,,,LVIS
-60,tank top (clothing),1227.0,,,,LVIS
-61,sandal (type of shoe),1124.0,,,sandal,LVIS
-62,sweater,1089.0,,,,LVIS
-63,headband,978.0,,,,LVIS
-64,swimsuit,892.0,,,swimwear,LVIS
-65,scarf,863.0,,,,LVIS
-66,coat,831.0,,,,LVIS
-67,vest,772.0,,,,LVIS
-68,beanie,653.0,,,,LVIS
-69,apron,565.0,,,,LVIS
-70,bow (decorative ribbons),561.0,,,bow,LVIS
-71,life jacket,250.0,,,,LVIS
+42,waffle,378.0,41.0,15.0,,OID
+43,watch,1434.0,90.0,29.0,,OID
+44,sock,2231.0,,,,LVIS
+45,belt,2203.0,,,,LVIS
+46,umbrella,2203.0,,,,LVIS
+47,watch,2193.0,,,,LVIS
+48,backpack,2182.0,,,,LVIS
+49,shoe,2182.0,,,,LVIS
+50,jersey,2178.0,,,,LVIS
+51,shirt,2174.0,,,,LVIS
+52,necklace,2167.0,,,,LVIS
+53,glove,2152.0,,,,LVIS
+54,earring,2133.0,,,earrings,LVIS
+55,napkin,2088.0,,,,LVIS
+56,bracelet,1877.0,,,,LVIS
+57,Ring,1784.0,,,,LVIS
+58,dress,1664.0,,,,LVIS
+59,wet suit,1639.0,,,,LVIS
+60,boot,1578.0,,,,LVIS
+61,tank top (clothing),1227.0,,,,LVIS
+62,sandal (type of shoe),1124.0,,,sandal,LVIS
+63,sweater,1089.0,,,,LVIS
+64,headband,978.0,,,,LVIS
+65,swimsuit,892.0,,,swimwear,LVIS
+66,scarf,863.0,,,,LVIS
+67,coat,831.0,,,,LVIS
+68,vest,772.0,,,,LVIS
+69,beanie,653.0,,,,LVIS
+70,apron,565.0,,,,LVIS
+71,bow (decorative ribbons),561.0,,,bow,LVIS
+72,life jacket,250.0,,,,LVIS
