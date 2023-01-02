@@ -47,148 +47,133 @@
 45,glasses,41945.0,819.0,258.0,,OID
 46,guitar,17671.0,326.0,104.0,,OID
 47,handbag,1901.0,198.0,61.0,bag,OID
-48,headphones,1064.0,95.0,39.0,,OID
-49,houseplant,8932.0,801.0,296.0,plant,OID
-50,infant_bed,426.0,74.0,24.0,bed,OID
-51,jug,395.0,79.0,26.0,cup,OID
-52,kettle,464.0,100.0,30.0,,OID
-53,kitchen_&_dining_room_table,1966.0,112.0,32.0,table,OID
-54,kitchen_knife,274.0,76.0,25.0,knife,OID
-55,knife,610.0,167.0,59.0,,OID
-56,ladder,754.0,72.0,21.0,,OID
-57,lamp,1565.0,130.0,40.0,,OID
-58,laptop,5528.0,197.0,52.0,,OID
-59,light_bulb,427.0,49.0,17.0,Lightbulb,OID
-60,luggage_and_bags,953.0,121.0,37.0,bag,OID
-61,mechanical_fan,589.0,68.0,25.0,fan,OID
-62,microphone,20393.0,265.0,112.0,,OID
-63,microwave_oven,432.0,68.0,25.0,microwave,OID
-64,mirror,1146.0,103.0,31.0,,OID
-65,mixer,181.0,40.0,11.0,,OID
-66,mixing_bowl,597.0,59.0,17.0,bowl,OID
-67,mobile_phone,4312.0,360.0,105.0,,OID
-68,mug,1598.0,148.0,41.0,cup,OID
-69,nightstand,773.0,140.0,45.0,lamp,OID
-70,oven,509.0,77.0,35.0,,OID
-71,pen,1011.0,101.0,44.0,,OID
-72,person,248384.0,21688.0,7144.0,,OID
-73,piano,1246.0,267.0,95.0,,OID
-74,picture_frame,5536.0,143.0,45.0,picture,OID
+48,handgun,561.0,75.0,20.0,gun,OID
+49,headphones,1064.0,95.0,39.0,,OID
+50,houseplant,8932.0,801.0,296.0,plant,OID
+51,infant_bed,426.0,74.0,24.0,bed,OID
+52,jug,395.0,79.0,26.0,cup,OID
+53,kettle,464.0,100.0,30.0,,OID
+54,kitchen_&_dining_room_table,1966.0,112.0,32.0,table,OID
+55,kitchen_knife,274.0,76.0,25.0,knife,OID
+56,knife,610.0,167.0,59.0,,OID
+57,ladder,754.0,72.0,21.0,,OID
+58,lamp,1565.0,130.0,40.0,,OID
+59,laptop,5528.0,197.0,52.0,,OID
+60,light_bulb,427.0,49.0,17.0,Lightbulb,OID
+61,luggage_and_bags,953.0,121.0,37.0,bag,OID
+62,mechanical_fan,589.0,68.0,25.0,fan,OID
+63,microphone,20393.0,265.0,112.0,,OID
+64,microwave_oven,432.0,68.0,25.0,microwave,OID
+65,mirror,1146.0,103.0,31.0,,OID
+66,mixer,181.0,40.0,11.0,,OID
+67,mixing_bowl,597.0,59.0,17.0,bowl,OID
+68,mobile_phone,4312.0,360.0,105.0,,OID
+69,mug,1598.0,148.0,41.0,cup,OID
+70,nightstand,773.0,140.0,45.0,lamp,OID
+71,oven,509.0,77.0,35.0,,OID
+72,pen,1011.0,101.0,44.0,,OID
+73,person,248384.0,21688.0,7144.0,,OID
+74,piano,1246.0,267.0,95.0,,OID
 75,pillow,1249.0,189.0,47.0,,OID
 76,pitcher_(container),288.0,59.0,20.0,pitcher,OID
 77,plant,72363.0,11531.0,3838.0,,OID
 78,plastic_bag,517.0,20.0,9.0,,OID
 79,plate,2023.0,200.0,59.0,,OID
-80,poster,16152.0,575.0,199.0,picture,OID
-81,refrigerator,549.0,110.0,25.0,,OID
-82,remote_control,192.0,20.0,6.0,remote control,OID
-83,salt_and_pepper_shakers,96.0,3.0,2.0,salt shaker,OID
-84,saucer,1582.0,260.0,92.0,,OID
-85,saxophone,854.0,102.0,33.0,,OID
-86,scissors,292.0,6.0,1.0,,OID
-87,sculpture,18107.0,554.0,190.0,,OID
-88,serving_tray,106.0,25.0,7.0,tray,OID
-89,sewing_machine,362.0,75.0,24.0,sewing machine,OID
-90,shelf,6011.0,592.0,194.0,,OID
-91,shower,206.0,29.0,8.0,,OID
-92,sink,1442.0,117.0,49.0,,OID
-93,skull,1501.0,100.0,27.0,,OID
-94,sofa_bed,1132.0,125.0,47.0,couch,OID
-95,spatula,38.0,2.0,1.0,,OID
-96,spoon,1044.0,155.0,52.0,,OID
-97,stairs,4533.0,131.0,36.0,,OID
-98,stool,576.0,67.0,18.0,chair,OID
-99,studio_couch,1133.0,125.0,47.0,couch,OID
-100,suitcase,408.0,55.0,23.0,,OID
-101,table,44845.0,1714.0,593.0,,OID
-102,tablet_computer,784.0,43.0,11.0,tablet,OID
-103,tap,1170.0,101.0,40.0,water tap,OID
-104,teapot,496.0,95.0,35.0,,OID
-105,teddy_bear,1020.0,86.0,18.0,,OID
-106,television,2789.0,135.0,39.0,screen,OID
-107,tin_can,1307.0,143.0,36.0,canister,OID
-108,toilet,862.0,62.0,28.0,,OID
-109,toilet_paper,226.0,16.0,4.0,,OID
-110,toothbrush,113.0,12.0,10.0,,OID
-111,towel,144.0,20.0,6.0,,OID
-112,tripod,1196.0,117.0,33.0,,OID
-113,vase,1561.0,197.0,65.0,,OID
-114,wall_clock,854.0,47.0,20.0,clock,OID
-115,wardrobe,208.0,49.0,8.0,cupboard,OID
-116,wheelchair,882.0,114.0,48.0,,OID
-117,whiteboard,899.0,45.0,20.0,,OID
-118,window,59833.0,2836.0,904.0,,OID
-119,window_blind,397.0,35.0,12.0,,OID
-120,wine,4878.0,258.0,93.0,,OID
-121,wine_glass,4894.0,261.0,90.0,wine glass,OID
-122,wok,470.0,59.0,31.0,frying pan,OID
-123,chair,25504.0,944.0,311.0,,OID-extra
-124,door,13382.0,546.0,204.0,,OID-extra
-125,flower,62716.0,6949.0,2336.0,,OID-extra
-126,person,248384.0,21688.0,7144.0,,OID-extra
-127,plant,72363.0,11531.0,3838.0,,OID-extra
-128,alarm clock,164.0,,,clock,LVIS
-129,pillow,2213.0,,,,LVIS
-130,backpack,2182.0,,,,LVIS
-131,Sofa,2190.0,,,couch,LVIS
-132,glass (drink container),2188.0,,,glass,LVIS
-133,bowl,2163.0,,,,LVIS
-134,faucet,2162.0,,,water tap,LVIS
-135,drawer,2157.0,,,,LVIS
-136,Trash can,2155.0,,,waste bin,LVIS
-137,Toilet,2152.0,,,,LVIS
-138,vase,2138.0,,,,LVIS
-139,curtain,2140.0,,,,LVIS
-140,mirror,2132.0,,,,LVIS
-141,knife,2125.0,,,,LVIS
-142,fork,2114.0,,,,LVIS
-143,clock,2106.0,,,,LVIS
-144,lamp,2067.0,,,,LVIS
-145,box,1997.0,,,,LVIS
-146,doorknob,1948.0,,,,LVIS
-147,sink,1869.0,,,,LVIS
-148,suitcase,1831.0,,,,LVIS
-149,cup,1698.0,,,,LVIS
-150,refrigerator,1655.0,,,,LVIS
-151,plastic bag,1640.0,,,,LVIS
-152,spoon,1287.0,,,,LVIS
-153,remote control,1273.0,,,,LVIS
-154,candle,1257.0,,,,LVIS
-155,stove,1170.0,,,,LVIS
-156,toilet tissue,1164.0,,,toilet paper,LVIS
-157,microwave oven,1097.0,,,microwave,LVIS
-158,tray,1033.0,,,,LVIS
-159,lightbulb,991.0,,,,LVIS
-160,mug,933.0,,,cup,LVIS
-161,bathtub,929.0,,,,LVIS
-162,toothbrush,831.0,,,,LVIS
-163,scissors,804.0,,,,LVIS
-164,bucket,801.0,,,,LVIS
-165,oven,776.0,,,,LVIS
-166,chopping board,732.0,,,cutting board,LVIS
-167,towel,719.0,,,,LVIS
-168,ladder,710.0,,,,LVIS
-169,fan,674.0,,,,LVIS
-170,fireplace,603.0,,,,LVIS
-171,soap,598.0,,,,LVIS
-172,pot,546.0,,,,LVIS
-173,can,502.0,,,canister,LVIS
-174,shower head,432.0,,,shower,LVIS
-175,shower curtain,424.0,,,curtain,LVIS
-176,saltshaker,418.0,,,salt shaker,LVIS
-177,bath towel,405.0,,,towel,LVIS
-178,pen,382.0,,,,LVIS
-179,stool,344.0,,,chair,LVIS
-180,microphone,315.0,,,,LVIS
-181,pitcher (vessel for liquid),309.0,,,pitcher,LVIS
-182,blender,283.0,,,,LVIS
-183,crate,279.0,,,box,LVIS
-184,saucer,278.0,,,,LVIS
-185,pan (for cooking),276.0,,,frying pan,LVIS
-186,coffee maker,264.0,,,,LVIS
-187,christmas tree,247.0,,,,LVIS
-188,hand towel,229.0,,,towel,LVIS
-189,guitar,221.0,,,,LVIS
-190,teapot,151.0,,,,LVIS
-191,frying pan,141.0,,,,LVIS
-192,wheelchair,90.0,,,,LVIS
+80,refrigerator,549.0,110.0,25.0,,OID
+81,remote_control,192.0,20.0,6.0,remote control,OID
+82,saxophone,854.0,102.0,33.0,,OID
+83,scissors,292.0,6.0,1.0,,OID
+84,sewing_machine,362.0,75.0,24.0,sewing machine,OID
+85,shelf,6011.0,592.0,194.0,,OID
+86,sink,1442.0,117.0,49.0,,OID
+87,sofa_bed,1132.0,125.0,47.0,couch,OID
+88,spoon,1044.0,155.0,52.0,,OID
+89,stairs,4533.0,131.0,36.0,,OID
+90,stool,576.0,67.0,18.0,chair,OID
+91,studio_couch,1133.0,125.0,47.0,couch,OID
+92,suitcase,408.0,55.0,23.0,,OID
+93,table,44845.0,1714.0,593.0,,OID
+94,tablet_computer,784.0,43.0,11.0,tablet,OID
+95,tap,1170.0,101.0,40.0,water tap,OID
+96,teapot,496.0,95.0,35.0,,OID
+97,teddy_bear,1020.0,86.0,18.0,,OID
+98,television,2789.0,135.0,39.0,screen,OID
+99,tin_can,1307.0,143.0,36.0,canister,OID
+100,toilet,862.0,62.0,28.0,,OID
+101,toilet_paper,226.0,16.0,4.0,,OID
+102,toothbrush,113.0,12.0,10.0,,OID
+103,towel,144.0,20.0,6.0,,OID
+104,vase,1561.0,197.0,65.0,,OID
+105,wall_clock,854.0,47.0,20.0,clock,OID
+106,wardrobe,208.0,49.0,8.0,cupboard,OID
+107,wheelchair,882.0,114.0,48.0,,OID
+108,whiteboard,899.0,45.0,20.0,,OID
+109,window,59833.0,2836.0,904.0,,OID
+110,window_blind,397.0,35.0,12.0,,OID
+111,wine,4878.0,258.0,93.0,,OID
+112,wine_glass,4894.0,261.0,90.0,wine glass,OID
+113,wok,470.0,59.0,31.0,frying pan,OID
+114,chair,25504.0,944.0,311.0,,OID-extra
+115,door,13382.0,546.0,204.0,,OID-extra
+116,flower,62716.0,6949.0,2336.0,,OID-extra
+117,flowerpot,7352.0,495.0,184.0,,OID-extra
+118,houseplant,8932.0,801.0,296.0,plant,OID-extra
+119,person,248384.0,21688.0,7144.0,,OID-extra
+120,plant,72363.0,11531.0,3838.0,,OID-extra
+121,alarm clock,164.0,,,clock,LVIS
+122,pillow,2213.0,,,,LVIS
+123,backpack,2182.0,,,,LVIS
+124,Sofa,2190.0,,,couch,LVIS
+125,glass (drink container),2188.0,,,cup,LVIS
+126,bowl,2163.0,,,,LVIS
+127,faucet,2162.0,,,water tap,LVIS
+128,drawer,2157.0,,,,LVIS
+129,Toilet,2152.0,,,,LVIS
+130,vase,2138.0,,,,LVIS
+131,curtain,2140.0,,,,LVIS
+132,mirror,2132.0,,,,LVIS
+133,knife,2125.0,,,,LVIS
+134,fork,2114.0,,,,LVIS
+135,clock,2106.0,,,,LVIS
+136,lamp,2067.0,,,,LVIS
+137,box,1997.0,,,,LVIS
+138,sink,1869.0,,,,LVIS
+139,suitcase,1831.0,,,,LVIS
+140,cup,1698.0,,,,LVIS
+141,refrigerator,1655.0,,,,LVIS
+142,plastic bag,1640.0,,,,LVIS
+143,spoon,1287.0,,,,LVIS
+144,remote control,1273.0,,,,LVIS
+145,candle,1257.0,,,,LVIS
+146,stove,1170.0,,,,LVIS
+147,toilet tissue,1164.0,,,toilet paper,LVIS
+148,microwave oven,1097.0,,,microwave,LVIS
+149,lightbulb,991.0,,,,LVIS
+150,mug,933.0,,,cup,LVIS
+151,bathtub,929.0,,,,LVIS
+152,toothbrush,831.0,,,,LVIS
+153,scissors,804.0,,,,LVIS
+154,oven,776.0,,,,LVIS
+155,chopping board,732.0,,,cutting board,LVIS
+156,towel,719.0,,,,LVIS
+157,ladder,710.0,,,,LVIS
+158,fan,674.0,,,,LVIS
+159,fireplace,603.0,,,,LVIS
+160,can,502.0,,,canister,LVIS
+161,shower head,432.0,,,shower,LVIS
+162,shower curtain,424.0,,,curtain,LVIS
+163,bath towel,405.0,,,towel,LVIS
+164,pen,382.0,,,,LVIS
+165,stool,344.0,,,chair,LVIS
+166,microphone,315.0,,,,LVIS
+167,pitcher (vessel for liquid),309.0,,,pitcher,LVIS
+168,blender,283.0,,,,LVIS
+169,crate,279.0,,,box,LVIS
+170,pan (for cooking),276.0,,,frying pan,LVIS
+171,coffee maker,264.0,,,,LVIS
+172,christmas tree,247.0,,,,LVIS
+173,hand towel,229.0,,,towel,LVIS
+174,guitar,221.0,,,,LVIS
+175,teapot,151.0,,,,LVIS
+176,frying pan,141.0,,,,LVIS
+177,wheelchair,90.0,,,,LVIS
