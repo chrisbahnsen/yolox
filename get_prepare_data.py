@@ -205,6 +205,22 @@ def getPrepareData(model, limit, yoloxmodel, noDownload):
 
         oid = OIDv6()
         oid.download(args)
+
+
+        # Download extra images for OID for certain classes
+        if len(downloadList['oid-extra']) > 0:
+            extraClassListPath = os.path.join('datasets', "{}-extra.txt".format(model))
+            with open(extraClassListPath, 'w') as f:
+                for c in downloadList['oid-extra']:
+                    f.write(c + '\n')
+            
+            args['classes'] = [extraClassListPath]
+            args['limit'] = limit * 3
+
+            oid = OIDv6()
+            oid.download(args)
+        
+        
         cwd = os.getcwd()
 
         # For the categories with amount of data below limit, merge the test and validation set into the training set
@@ -404,9 +420,9 @@ def getPrepareData(model, limit, yoloxmodel, noDownload):
 if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description="Utility script for downloading and preparing dataset for YOLOX training")
-    parser.add_argument('--model', type=str, default="sporthobby", help="Name of the model. Make sure that appropriate csv file is provided")
+    parser.add_argument('--model', type=str, default="inde", help="Name of the model. Make sure that appropriate csv file is provided")
     parser.add_argument('--limit', type=int, default="5000", help="Maximum number of images per class that are downloaded")
-    parser.add_argument('--yoloxmodel', type=str, default='nano', help='Name of the YOLOX model to train. Currently, only nano and tiny are supported')
+    parser.add_argument('--yoloxmodel', type=str, default='tiny', help='Name of the YOLOX model to train. Currently, only nano and tiny are supported')
     parser.add_argument('--no_download', help='Do not download data, only prepare existing.', action='store_true')
 
     args = parser.parse_args()

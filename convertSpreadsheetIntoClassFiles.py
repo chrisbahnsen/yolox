@@ -13,10 +13,17 @@ for sheetName in wb.sheetnames:
     if 'draft' not in sheetName:
         datasheets.append(sheetName)
 
+        if 'OID' in sheetName:
+            datasheets.append('OID-extra')
+
 modelLists = dict()
 
 for sheet in datasheets:
-    df = pd.read_excel(filename, sheet_name=sheet)
+    if 'OID-extra' in sheet:
+        # Read OID
+        df = pd.read_excel(filename, sheet_name='OID')
+    else:
+        df = pd.read_excel(filename, sheet_name=sheet)
 
     cols = df.columns
 
@@ -31,10 +38,16 @@ for sheet in datasheets:
             # The models are columns after the "rename" column
             appendModels = True        
 
+
     print(df.to_string())
 
     for model in models:
-        subset = df[df[model].notna()]
+        if 'OID-extra' in sheet:
+            n = pd.to_numeric(df[model])            
+            subset = df[n > 1]
+        else:
+            subset = df[df[model].notna()]
+
 
         # Only include columns to "Rename" column
         reducedCols = subset.loc[:, :'Rename']
