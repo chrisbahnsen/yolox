@@ -89,6 +89,10 @@ def convertFromOidv6ToVoc(ann_path, image_path, dest_path, classRenameDict, dele
 
             old_class_name = x[0].replace('_',' ')
 
+            if old_class_name not in classRenameDict:
+                # Skip object
+                continue
+
             child_name.text = classRenameDict[old_class_name]
 
             child_pose = SubElement(child_obj, 'pose')
