@@ -204,7 +204,7 @@ def getPrepareData(model, limit, yoloxmodel, noDownload):
         args['command'] = 'downloader'
 
         oid = OIDv6()
-        # oid.download(args)
+        oid.download(args)
 
 
         # Download extra images for OID for certain classes
