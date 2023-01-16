@@ -74,7 +74,21 @@ def convertCOCOtoVOC(cats, imags, anns, dst_base, classRenameDict):
     # with open(os.path.join(dst_dirs["ImageSets"], "{}.txt".format(stage)), "w") as f:
     #     f.writelines(list(map(lambda x: str(x).zfill(12) + "\n", images.keys())))
 
+def downloadAnn(annsObj, dstPath, imageId):
+    tryAgain = False
 
+    try:
+        annsObj.download(dstPath, 
+                    [imageId])
+    except ConnectionError as e:
+        tryAgain = True
+    except OSError:
+        tryAgain = True
+
+    if tryAgain:
+        print("Connection hiccup, trying again in 2 sec...")
+        time.sleep(2)
+        downloadAnn(annsObj, dstPath, imageId)
 
 def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, limit):
 
@@ -165,14 +179,9 @@ def getLVISbyCategories(chosenSet, selectedCats, dstFolder, classRenameDict, lim
 
     # Download images
     for imageId in tqdm(imageids, "Downloading LVIS {} images...".format(chosenSet)):
-        try:
-            anns.download(os.path.join(dstFolder, 'JPEGImages'), 
-                        [imageId])
-        except ConnectionError as e:
-            print("Connection hiccup, trying again in 1 sec...")
-            time.sleep(1)
-            anns.download(os.path.join(dstFolder, 'JPEGImages'), 
-                        [imageId])
+    
+        dstPath = os.path.join(dstFolder, 'JPEGImages')
+        downloadAnn(anns, dstPath, imageId)
 
 
     selectedAnnotations = dict()
