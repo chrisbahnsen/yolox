@@ -662,27 +662,40 @@ class OIDv6(Messages):
 
 
                 boxes = groups.get_group(basename_multi)[[
-                    'LabelName', 'XMin', 'XMax', 'YMin', 'YMax'
+                    'LabelName', 'XMin', 'XMax', 'YMin', 'YMax', 'IsGroupOf'
                 ]].values.tolist()
 
+                # Check if working
+                isGroupAnnotationInImage = False
 
-                # Путь к текстовому файлу, куда будут сохранены координаты
-                file_path = os.path.join(labels_path, basename + '.txt')
+                for box in boxes:
+                    cls_code = box[0]
+                    cls_name = self._class_code_to_class_name[cls_code]
 
-                # Открытие файла для записи
-                with open(file_path, 'w') as f:
-                    for box in boxes:
-                        cls_code = box[0]
+                    if cls_code in self._class_codes:
+                        if int(box[5]) > 0:
+                            isGroupAnnotationInImage = True
+                            
+                            print("Group annotation in {}, not downloading label for {}".format(cls_name, basename_multi))
 
-                        if cls_code in self._class_codes:
-                            cls_name = self._class_code_to_class_name[cls_code]
-                        
-                            box[1] *= int(curr_image.shape[1])
-                            box[2] *= int(curr_image.shape[1])
-                            box[3] *= int(curr_image.shape[0])
-                            box[4] *= int(curr_image.shape[0])
+                if not isGroupAnnotationInImage:
+                    # Путь к текстовому файлу, куда будут сохранены координаты
+                    file_path = os.path.join(labels_path, basename + '.txt')
 
-                            print(cls_name, box[1], box[3], box[2], box[4], file = f)
+                    # Открытие файла для записи
+                    with open(file_path, 'w') as f:
+                        for box in boxes:
+                            cls_code = box[0]
+
+                            if cls_code in self._class_codes:
+                                cls_name = self._class_code_to_class_name[cls_code]
+                            
+                                box[1] *= int(curr_image.shape[1])
+                                box[2] *= int(curr_image.shape[1])
+                                box[3] *= int(curr_image.shape[0])
+                                box[4] *= int(curr_image.shape[0])
+
+                                print(cls_name, box[1], box[3], box[2], box[4], file = f)
 
                 # Вывод сообщения
                 if out is True:
