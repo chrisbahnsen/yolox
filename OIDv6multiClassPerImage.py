@@ -634,6 +634,7 @@ class OIDv6(Messages):
                 os.makedirs(labels_path)
 
             groups = self._type_data[curr_type_multi]['df'].groupby(self._type_data[curr_type_multi]['df'].ImageID)
+            groupAnnotationCount = 0
             
             # Проход по всем изображениям
             for i, img in enumerate(self._labels_list):
@@ -670,13 +671,14 @@ class OIDv6(Messages):
 
                 for box in boxes:
                     cls_code = box[0]
-                    cls_name = self._class_code_to_class_name[cls_code]
 
                     if cls_code in self._class_codes:
+                        cls_name = self._class_code_to_class_name[cls_code]
+
                         if int(box[5]) > 0:
                             isGroupAnnotationInImage = True
+                            groupAnnotationCount += 1
                             
-                            print("Group annotation in {}, not downloading label for {}".format(cls_name, basename_multi))
 
                 if not isGroupAnnotationInImage:
                     # Путь к текстовому файлу, куда будут сохранены координаты
@@ -704,6 +706,8 @@ class OIDv6(Messages):
             # Вывод сообщения
             if out is True:
                 bar.finish()
+
+            print("Group annotation in {} out of {} images for class {}".format(groupAnnotationCount, len(self._labels_list), cls_name))
 
             return 200
         else:
